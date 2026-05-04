@@ -1,0 +1,51 @@
+name: utpm
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  # Coğrafi veri
+  - geopandas>=0.14
+  - rasterio>=1.3
+  - rioxarray>=0.15
+  - rasterstats>=0.19
+  - shapely>=2.0
+  - pyproj>=3.6
+  - fiona>=1.9
+  - contextily>=1.5
+  - mapclassify>=2.6
+  - osmnx>=1.9
+  # Mekânsal istatistik
+  - libpysal
+  - esda
+  - pointpats
+  # ML & istatistik
+  - scikit-learn>=1.4
+  - statsmodels>=0.14
+  - scipy
+  - numpy
+  - pandas
+  - openpyxl
+  # Görselleştirme
+  - matplotlib
+  - seaborn
+  - plotly
+  # Jupyter
+  - jupyter
+  - jupyterlab
+  - ipywidgets
+  # Yardımcı
+  - tqdm
+  - joblib
+  - pyyaml
+  - python-dotenv
+  - pytest
+  - pip
+  - pip:
+    - earthengine-api
+    - geemap
+    - shap
+    - streamlit
+    - folium
+    - streamlit-folium
+    - anthropic

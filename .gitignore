@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Environments
+.env
+.venv/
+env/
+
+# Data — büyük dosyalar git'e gitmesin
+data/raw/*
+data/processed/*
+data/external/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/external/.gitkeep
+!data/raw/konyaalti_imar_tum_veri.xlsx
+
+# Sonuçlar
+results/*.pkl
+results/*.npz
+figures/*.png
+figures/*.jpg
+figures/*.pdf
+!results/.gitkeep
+!figures/.gitkeep
+
+# Streamlit
+streamlit_app/.streamlit/secrets.toml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
