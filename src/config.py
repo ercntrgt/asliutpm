@@ -3,6 +3,7 @@
 Tüm yollar, CRS, mahalle listesi, model parametreleri burada.
 Magic number kullanmayın — gerekli sabit yoksa buraya ekleyin.
 """
+import os
 from pathlib import Path
 
 # --- Yollar ---
@@ -59,3 +60,28 @@ MIN_NEIGHBORS_FOR_IMPUTATION = 3
 # --- Excel kaynağı ---
 IMAR_XLSX = DATA_RAW / "konyaalti_imar_tum_veri.xlsx"
 IMAR_SHEET = "konyaalti_imar_tum_veri (2)"
+
+# --- Google Earth Engine ---
+# Kullanıcının Cloud project ID'si. PowerShell'de set:
+#   $env:GEE_PROJECT = "ee-ercangpg"
+# Kalıcı set:
+#   [Environment]::SetEnvironmentVariable("GEE_PROJECT", "ee-ercangpg", "User")
+GEE_PROJECT: str | None = os.environ.get("GEE_PROJECT")
+
+# --- LST raster çıktıları ---
+LST_RASTER = DATA_PROCESSED / "lst_summer_median_2020_2024.tif"
+LST_GRID_30M = DATA_PROCESSED / "grid_30m_lst.gpkg"
+
+# --- Sentinel-2 (NDVI + Albedo) ---
+S2_YEARS = [2020, 2021, 2022, 2023, 2024]
+S2_MONTHS = [6, 7, 8]
+S2_CLOUD_THRESHOLD = 20            # Sentinel-2 daha sık geçer, eşik daha gevşek
+NDVI_RASTER = DATA_PROCESSED / "ndvi_summer_median_2020_2024.tif"
+ALBEDO_RASTER = DATA_PROCESSED / "albedo_summer_median_2020_2024.tif"
+
+# --- ESA WorldCover (Geçirimsiz yüzey) ---
+WORLDCOVER_VERSION = "v200"        # v200 = 2021, v100 = 2020
+IMPERVIOUS_RASTER = DATA_PROCESSED / "impervious_esa_worldcover_2021.tif"
+
+# --- Birleştirilmiş 30m grid (LST + NDVI + Albedo + Impervious) ---
+GRID_30M_VARIABLES = DATA_PROCESSED / "grid_30m_variables.gpkg"

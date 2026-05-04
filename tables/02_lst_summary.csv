@@ -1,0 +1,13 @@
+﻿metrik,deger
+sahne_sayisi,71
+yil_araligi,2020-2024
+aylar,"6,7,8"
+bulut_esigi_pct,10
+raster_genislik,300
+raster_yukseklik,430
+grid_30m_hucre,28247
+lst_verili_hucre,28247
+lst_mean_min,29.78
+lst_mean_max,51.43
+lst_mean_median,43.16
+lst_std_median,0.0
