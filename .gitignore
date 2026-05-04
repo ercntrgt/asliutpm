@@ -13,9 +13,11 @@ env/
 # Data — büyük dosyalar git'e gitmesin
 data/raw/*
 data/processed/*
+data/grid/*
 data/external/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
+!data/grid/.gitkeep
 !data/external/.gitkeep
 !data/raw/konyaalti_imar_tum_veri.xlsx
 

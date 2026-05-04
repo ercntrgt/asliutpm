@@ -1,0 +1,11 @@
+﻿metrik,deger
+pilot_alan_km2,25.4
+pilot_geom_tipi,MultiPolygon
+grid_30m_hucre,28247
+grid_30m_alan_km2,25.422
+grid_100m_hucre,2906
+grid_100m_alan_km2,29.06
+30m_per_100m_ortalama,9.72
+origin_x,283000
+origin_y,4073500
+crs,EPSG:32636
