@@ -10,13 +10,22 @@ kararı destek asistanısın. Kullanıcı haritada bir 30 m grid hücresi seçer
 LST/UTPM/persistence/komşuluk verisini analiz edip Türkçe, sade, planlamacı dilinde 4-6 cümlelik
 bir yorum yazarsın.
 
+ÇERÇEVE — KRİTİK: Bu model klasik **Urban Heat Island (UHI = kentsel-kırsal ΔT)** değildir.
+Çalışma kırsal referansla karşılaştırma yapmaz; pilot alan içinde **yıllar arası ısı kalıcılığı**
+(thermal persistence / heat retention) ölçer. Yani odak: hangi hücreler 5 yaz boyunca tutarlı sıcak
+kalıyor, gece/sabah serinlemeye direniyor, ısıyı tutuyor. Bu nedenle **'kentsel ısı adası',
+'UHI çekirdeği', 'ısı adası riski'** gibi ifadeleri ASLA kullanma. Bunun yerine:
+'kalıcı sıcak alan', 'ısı kalıcılığı yüksek', 'gece/sabah serinlemiyor', 'soğumaya direnç',
+'ısıyı tutan bölge', 'yıllar boyu sıcak kalan hücre' gibi ifadeler kullan.
+
 Yorumun şu yapıyı izlesin:
-1. Bu hücrenin termal durumunu **bir cümle** ile özetle (sıcak/orta/serin + UTPM sınıfı).
+1. Bu hücrenin termal durumunu **bir cümle** ile özetle (sıcak/orta/serin + UTPM sınıfı,
+   kalıcılık vurgusu).
 2. Hangi 1-2 fiziksel **etken** (albedo, NDVI, kıyı mesafesi, geçirimsiz yüzey, bina yoğunluğu)
    bu durumdan sorumlu? Veriden destekli yorum yap.
 3. **Persistence** ne diyor? 5 yıl içinde kaç yıl en sıcak quartile'da olduğu önemli — 5/5 ise
-   "kalıcı UHI çekirdeği".
-4. **LISA cluster** durumunu yorumla (HH = UHI çekirdeği, LL = serin ada, NS = anlamsız).
+   "kalıcı sıcak hücre — yıllar boyu soğumaya direnen alan".
+4. **LISA cluster** durumunu yorumla (HH = kalıcı sıcak küme, LL = serin küme, NS = anlamsız).
 5. **Komşu karşılaştırma**: hücre çevresine göre nasıl?
 6. **Müdahale önerisi**: 1 cümle (yeşillendirme, soğuk çatı, gölge ağaç, vb.)
 
@@ -159,13 +168,13 @@ def _fallback_template(summary: dict, comparison: dict) -> str:
     if score is None:
         lines.append(f"Bu hücre için UTPM skoru bulunamadı (sınıf: **{cls}**). Veri kalitesi sınırlı olabilir.")
     elif score >= 60:
-        lines.append(f"Bu hücre **{cls}** sınıfında (UTPM {score:.1f}/100) — kentsel ısı adası riski yüksek.")
+        lines.append(f"Bu hücre **{cls}** sınıfında (UTPM {score:.1f}/100) — ısı kalıcılığı çok yüksek, gece/sabah serinlemiyor.")
     elif score >= 44:
-        lines.append(f"Hücre **{cls}** sınıfında (UTPM {score:.1f}). Termal stres orta-yüksek.")
+        lines.append(f"Hücre **{cls}** sınıfında (UTPM {score:.1f}). Isı kalıcılığı orta-yüksek, soğumakta zorlanıyor.")
     elif score >= 22:
-        lines.append(f"**{cls}** sınıfı (UTPM {score:.1f}). Termal yük düşük-orta.")
+        lines.append(f"**{cls}** sınıfı (UTPM {score:.1f}). Termal yük düşük-orta, görece serinleyebiliyor.")
     else:
-        lines.append(f"**{cls}** sınıfı (UTPM {score:.1f}) — kıyı/yeşil etki belirgin.")
+        lines.append(f"**{cls}** sınıfı (UTPM {score:.1f}) — kıyı/yeşil etki belirgin, hızlı serinliyor.")
 
     # 2. Etkenler
     feats = summary.get("features", {})
@@ -188,11 +197,11 @@ def _fallback_template(summary: dict, comparison: dict) -> str:
         ytq = pers["years_in_top_quartile"]
         ybq = pers["years_in_bottom_quartile"]
         if ytq == 5:
-            lines.append(f"5/5 yıl en sıcak quartile'da → **kalıcı UHI çekirdeği**.")
+            lines.append("5/5 yıl en sıcak quartile'da → **kalıcı sıcak alan, yıllar boyu serinlemiyor**.")
         elif ytq >= 3:
-            lines.append(f"{ytq}/5 yıl en sıcak quartile'da → tutarlı sıcak hücre.")
+            lines.append(f"{ytq}/5 yıl en sıcak quartile'da → tutarlı sıcak hücre, çoğu yaz serinleyemiyor.")
         elif ybq >= 3:
-            lines.append(f"{ybq}/5 yıl en serin quartile'da → tutarlı serin hücre.")
+            lines.append(f"{ybq}/5 yıl en serin quartile'da → tutarlı serin hücre, yıldan yıla rahatlıkla soğuyor.")
         else:
             lines.append("Persistence durumu karışık — yıllar arası değişken.")
 

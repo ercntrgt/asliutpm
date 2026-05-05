@@ -21,7 +21,7 @@ if (PROJECT_ROOT / "src").exists():
 
 JENKS_LABELS = ["Çok serin", "Serin", "Orta", "Sıcak", "Çok sıcak"]
 LISA_DESCRIPTIONS = {
-    "HH": "Sıcak küme (UHI çekirdeği) — yüksek LST, yüksek LST'li komşular",
+    "HH": "Kalıcı sıcak küme — yüksek LST, çevresi de sıcak (ısı tutan, soğumayan bölge)",
     "LL": "Serin küme — düşük LST, düşük LST'li komşular",
     "HL": "Yerel sıcak anomali — yüksek LST ama serin komşular",
     "LH": "Yerel serin anomali — düşük LST ama sıcak komşular",
