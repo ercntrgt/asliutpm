@@ -1,0 +1,10 @@
+﻿metrik,deger
+Konfig WIND_FROM_DEG,165
+ERA5 vector mean dir,158.9
+ERA5 histogram mode,155
+ERA5 medyan dir,160.6
+ERA5 25-75% dir,149-175
+Fark (config vs ERA5),6.1
+ERA5 medyan hız (m/s),2.97
+Sample saat sayısı,1840
+Karar,KEEP_CURRENT

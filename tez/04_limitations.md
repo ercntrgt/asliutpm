@@ -110,17 +110,28 @@ Median değerleri ise uyumlu: imar 12.0 m vs GHSL 11.08 m.
 
 ---
 
-## L8 — Rüzgar yönü kalibrasyonsuz (kısmen düzeltildi — Hafta 17)
+## L8 — Rüzgar yönü kalibrasyonsuz ✅ KAPANDI (Hafta 17 + 18)
 
-**Sorun:** DTC_breeze hesaplaması için rüzgar yönü 165° SSE literatür/iklim atlas değeri. ERA5 saatlik veriyle doğrulanmadı.
-
-**Etki:** Yön sapması gerçek meltemden ±15° farklıysa DTC_breeze değerleri anlamlı şekilde değişebilir.
+**Önceki durum:** DTC_breeze hesaplaması için rüzgar yönü 165° SSE literatür/iklim atlas değeri. ERA5 saatlik veriyle doğrulanmadı.
 
 **Hafta 17 ek:** Bina yüksekliği etkisi için `wind_blockage_index` feature'ı eklendi — ray boyunca bina yüksekliğine ağırlıklı toplam (mesafe-decay'li). RF'in 9. feature'ı oldu, SHAP %6 ağırlık aldı (Albedo+NDVI+DTC sonrası 5. sıra). Bu, rüzgar yönündeki bina blokajı etkisini modele dahil etti — kentsel klimatoloji literatürüyle (Oke 1987, Grimmond 1999, Stewart & Oke 2012 LCZ) uyum sağlandı.
 
-**Hala kalan sorun:** Rüzgar **yönü** ERA5 ile kalibre edilmedi. Sadece bina blokajı eklendi (yön sabit 165°).
+**Hafta 18 — ERA5 kalibrasyonu yapıldı:**
 
-**Sonraki çalışma:** ERA5 reanalysis 2020-2024 yaz öğle saatleri rüzgar yönü dağılımı çek, dominant yönü kalibre et, blockage_index'i o yönde yeniden hesapla.
+| Metrik | Değer |
+|---|---|
+| Konfig WIND_FROM_DEG | 165° |
+| ERA5 vector mean (5 yıl × yaz öğle, 1840 saat) | 158.9° |
+| ERA5 medyan | 160.6° |
+| ERA5 histogram dominant bin | 155° (%22.7) |
+| ERA5 IQR (25-75%) | 149.5° – 174.7° |
+| **Fark** | **6.1°** (eşik 10°'den az) |
+
+Yıllar arası tutarlı (2020-2024 arası 156°-164° dağılımı).
+
+**Sonuç:** Mevcut 165° konfig değeri ERA5 ile istatistiksel olarak **uyumlu**. Yeniden hesap **gerekmedi**. Detaylı rapor: `tez/08_era5_calibration.md`.
+
+**Tezsel duruş:** Wind direction veri-tabanlı doğrulanmıştır; mevcut UTPM modeli rüzgar yönü için kalibre kabul edilmektedir.
 
 ---
 

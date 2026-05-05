@@ -280,6 +280,157 @@ def s2_summer_median(
 # ESA WorldCover (Geçirimsiz yüzey oranı)
 # =============================================================================
 
+def era5_dominant_wind(
+    region,
+    years: Iterable[int] = (2020, 2021, 2022, 2023, 2024),
+    months: Iterable[int] = (6, 7, 8),
+    hours_utc: Iterable[int] = (11, 12, 13, 14),
+) -> dict:
+    """ERA5 hourly'den hakim yaz öğle rüzgar yönü — aggregate_array yöntemi.
+
+    Her image için region-mean u/v hesaplanıp property olarak set edilir,
+    sonra ``aggregate_array`` ile scalar listesi indirilir. Memory-friendly.
+
+    Yön formülü: ``(270 - atan2(v, u) * 180/π) mod 360`` — meteorolojik
+    "wind FROM" konvansiyonu.
+    """
+    import ee
+    import math
+    import numpy as np
+
+    years = list(years)
+    months = list(months)
+    hours_utc = list(hours_utc)
+
+    annual = []
+    all_u = []
+    all_v = []
+    for year in years:
+        coll_y = (
+            ee.ImageCollection("ECMWF/ERA5/HOURLY")
+            .filterBounds(region)
+            .filter(ee.Filter.calendarRange(year, year, "year"))
+            .filter(ee.Filter.calendarRange(min(months), max(months), "month"))
+            .filter(ee.Filter.calendarRange(min(hours_utc), max(hours_utc), "hour"))
+            .select(["u_component_of_wind_10m", "v_component_of_wind_10m"])
+        )
+
+        def _add_props(img):
+            stats = img.reduceRegion(
+                reducer=ee.Reducer.mean(),
+                geometry=region,
+                scale=27830,            # ERA5 native
+                bestEffort=True,
+            )
+            return img.set({
+                "mean_u": stats.get("u_component_of_wind_10m"),
+                "mean_v": stats.get("v_component_of_wind_10m"),
+            })
+
+        coll_with = coll_y.map(_add_props)
+        # Scalar listeleri çek
+        us = coll_with.aggregate_array("mean_u").getInfo()
+        vs = coll_with.aggregate_array("mean_v").getInfo()
+        # None'ları temizle
+        pairs = [(u, v) for u, v in zip(us, vs)
+                 if u is not None and v is not None]
+        if not pairs:
+            continue
+        us_clean, vs_clean = zip(*pairs)
+        u_y = float(np.mean(us_clean))
+        v_y = float(np.mean(vs_clean))
+        annual.append({"year": year, "u": u_y, "v": v_y, "n": len(pairs)})
+        all_u.extend(us_clean)
+        all_v.extend(vs_clean)
+
+    # Tüm değerlerden scalar mean
+    u_all = float(np.mean(all_u))
+    v_all = float(np.mean(all_v))
+    speed = math.sqrt(u_all**2 + v_all**2)
+    direction_from = (270 - math.degrees(math.atan2(v_all, u_all))) % 360
+
+    return {
+        "u": u_all,
+        "v": v_all,
+        "speed_m_s": speed,
+        "direction_from_deg": direction_from,
+        "n_images": len(all_u),
+        "annual": annual,
+        "all_u": all_u,
+        "all_v": all_v,
+        "years": years,
+        "months": months,
+        "hours_utc": hours_utc,
+    }
+
+
+def era5_wind_distribution(
+    region,
+    years: Iterable[int] = (2020, 2021, 2022, 2023, 2024),
+    months: Iterable[int] = (6, 7, 8),
+    hours_utc: Iterable[int] = (11, 12, 13, 14),
+) -> "pd.DataFrame":
+    """Her saat için u/v — yıl-by-yıl chunked.
+
+    Konyaaltı gibi tek-pikselli bbox için yılda ~360 saat → 5 yıl × 360.
+    Yıl bazlı .toList() ile memory limit aşılmaz.
+    """
+    import ee
+    import pandas as pd
+    import math
+
+    years = list(years)
+    months = list(months)
+    hours_utc = list(hours_utc)
+
+    all_records = []
+    for year in years:
+        coll_y = (
+            ee.ImageCollection("ECMWF/ERA5/HOURLY")
+            .filterBounds(region)
+            .filter(ee.Filter.calendarRange(year, year, "year"))
+            .filter(ee.Filter.calendarRange(min(months), max(months), "month"))
+            .filter(ee.Filter.calendarRange(min(hours_utc), max(hours_utc), "hour"))
+            .select(["u_component_of_wind_10m", "v_component_of_wind_10m"])
+        )
+
+        def _img_to_feat(img):
+            stats = img.reduceRegion(
+                reducer=ee.Reducer.mean(),
+                geometry=region,
+                scale=20000,
+                bestEffort=True,
+            )
+            return ee.Feature(None, {
+                "u": stats.get("u_component_of_wind_10m"),
+                "v": stats.get("v_component_of_wind_10m"),
+                "ts": img.get("system:time_start"),
+            })
+
+        fc = ee.FeatureCollection(coll_y.map(_img_to_feat))
+        try:
+            rows = fc.toList(fc.size()).getInfo()
+        except Exception as e:
+            print(f"  [warn] {year} skipped: {type(e).__name__}: {e}")
+            continue
+
+        for r in rows:
+            p = r["properties"]
+            if p.get("u") is None or p.get("v") is None:
+                continue
+            u = float(p["u"])
+            v = float(p["v"])
+            all_records.append({
+                "year": year,
+                "ts_ms": int(p["ts"]) if p.get("ts") else None,
+                "u": u,
+                "v": v,
+                "speed": math.sqrt(u**2 + v**2),
+                "dir_from": (270 - math.degrees(math.atan2(v, u))) % 360,
+            })
+    return pd.DataFrame(all_records)
+
+
 def ghsl_built_height(region, year: int = 2018):
     """GHSL JRC global built-up height image (100 m).
 
