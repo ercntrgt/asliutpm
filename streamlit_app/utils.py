@@ -32,22 +32,22 @@ LISA_DESCRIPTIONS = {
 
 
 def load_all_data() -> dict:
-    """UTPM, persistence ve full feature tablolarını yükler.
+    """UTPM, persistence, features ve priority decision layer'ı yükler."""
+    from src.config import PRIORITY_GPKG  # geç import — yeni alan
 
-    Returns
-    -------
-    dict
-        ``utpm``, ``persist``, ``features``, ``boundary`` GeoDataFrame'leri.
-    """
     utpm = gpd.read_file(UTPM_GPKG)
     persist = gpd.read_file(PERSISTENCE_GPKG)
     features = gpd.read_file(GRID_30M_FULL)
     boundary = gpd.read_file(DATA_GRID / "pilot_boundary.gpkg")
+    priority = None
+    if PRIORITY_GPKG.exists():
+        priority = gpd.read_file(PRIORITY_GPKG)
     return {
         "utpm": utpm,
         "persist": persist,
         "features": features,
         "boundary": boundary,
+        "priority": priority,
     }
 
 
@@ -130,6 +130,19 @@ def cell_summary(
             "years_in_top_quartile": int(p["years_in_top_quartile"]) if pd.notna(p["years_in_top_quartile"]) else 0,
             "years_in_bottom_quartile": int(p["years_in_bottom_quartile"]) if pd.notna(p["years_in_bottom_quartile"]) else 0,
         }
+
+    # Priority decision layer
+    priority = data.get("priority")
+    if priority is not None:
+        pr = priority[priority["cell_id"] == cell_id]
+        if not pr.empty:
+            pr = pr.iloc[0]
+            summary["priority"] = {
+                "label": str(pr["priority_label"]),
+                "wind_blockage_index": float(pr["wind_blockage_index"]) if pd.notna(pr["wind_blockage_index"]) else None,
+                "utpm_tier": int(pr["utpm_tier"]) if pd.notna(pr["utpm_tier"]) else None,
+                "block_tier": int(pr["block_tier"]) if pd.notna(pr["block_tier"]) else None,
+            }
 
     return summary
 

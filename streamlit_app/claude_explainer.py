@@ -59,6 +59,16 @@ def build_user_prompt(summary: dict, comparison: dict) -> str:
             f"- 5 yılda en serin quartile'da olduğu yıl sayısı: {pers['years_in_bottom_quartile']}/5",
         ]
 
+    if "priority" in summary:
+        pr = summary["priority"]
+        nice = pr["label"].split("_", 1)[1].replace("_", " ").title()
+        lines += [
+            "",
+            "## Karar Önceliği",
+            f"- Sınıf: **{nice}** (UTPM tier {pr['utpm_tier']}/2, Blockage tier {pr['block_tier']}/2)",
+            f"- Wind blockage index: {pr['wind_blockage_index']:.3f}" if pr['wind_blockage_index'] else "",
+        ]
+
     if comparison:
         lines += [
             "",

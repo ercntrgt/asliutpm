@@ -1,0 +1,97 @@
+{
+  "priority_dist": {
+    "9_KORUMA": 6135,
+    "1_ACIL_MUDAHALE": 4420,
+    "6_ORTA_ACIK": 4386,
+    "3_SICAK_ACIK": 3321,
+    "4_BLOKLU_ORTA": 3039,
+    "5_ORTA": 1990,
+    "7_BLOKLU_SERIN": 1813,
+    "2_YUKSEK_ONCELIK": 1675,
+    "8_SERIN_ORTA": 1468
+  },
+  "utpm_terciles": [
+    32.1283401816933,
+    42.73876159626073
+  ],
+  "block_terciles": [
+    0.0,
+    0.23020408163265305
+  ],
+  "bivariate_matrix": {
+    "u0_b0": 6135,
+    "u0_b1": 1468,
+    "u0_b2": 1813,
+    "u1_b0": 4386,
+    "u1_b1": 1990,
+    "u1_b2": 3039,
+    "u2_b0": 3321,
+    "u2_b1": 1675,
+    "u2_b2": 4420
+  },
+  "summary": [
+    {
+      "priority_label": "1_ACIL_MUDAHALE",
+      "hucre": 4420,
+      "utpm_med": 48.12,
+      "blockage_med": 0.42,
+      "lst_med": 43.51
+    },
+    {
+      "priority_label": "2_YUKSEK_ONCELIK",
+      "hucre": 1675,
+      "utpm_med": 47.18,
+      "blockage_med": 0.14,
+      "lst_med": 43.73
+    },
+    {
+      "priority_label": "3_SICAK_ACIK",
+      "hucre": 3321,
+      "utpm_med": 48.52,
+      "blockage_med": 0.0,
+      "lst_med": 44.29
+    },
+    {
+      "priority_label": "4_BLOKLU_ORTA",
+      "hucre": 3039,
+      "utpm_med": 38.77,
+      "blockage_med": 0.34,
+      "lst_med": 43.23
+    },
+    {
+      "priority_label": "5_ORTA",
+      "hucre": 1990,
+      "utpm_med": 38.15,
+      "blockage_med": 0.12,
+      "lst_med": 43.4
+    },
+    {
+      "priority_label": "6_ORTA_ACIK",
+      "hucre": 4386,
+      "utpm_med": 37.18,
+      "blockage_med": 0.0,
+      "lst_med": 43.43
+    },
+    {
+      "priority_label": "7_BLOKLU_SERIN",
+      "hucre": 1813,
+      "utpm_med": 24.0,
+      "blockage_med": 0.36,
+      "lst_med": 42.08
+    },
+    {
+      "priority_label": "8_SERIN_ORTA",
+      "hucre": 1468,
+      "utpm_med": 24.09,
+      "blockage_med": 0.12,
+      "lst_med": 42.24
+    },
+    {
+      "priority_label": "9_KORUMA",
+      "hucre": 6135,
+      "utpm_med": 23.28,
+      "blockage_med": 0.0,
+      "lst_med": 41.59
+    }
+  ]
+}

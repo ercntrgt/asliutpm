@@ -145,6 +145,7 @@ SHAP_VALUES_NPY = RESULTS / "shap_values.npy"
 SHAP_SAMPLE_GPKG = DATA_PROCESSED / "grid_30m_shap_sample.gpkg"
 UTPM_GPKG = DATA_PROCESSED / "grid_30m_utpm.gpkg"
 UTPM_RESULTS_JSON = RESULTS / "utpm_analysis.json"
+PRIORITY_GPKG = DATA_PROCESSED / "grid_30m_priority.gpkg"  # bivariate decision layer
 SHAP_SAMPLE_N = 1000              # SHAP hesabı için örneklem (approximate=True ile)
 MORAN_K_NEIGHBORS = 8             # Moran'a giren k-NN
 JENKS_K_CLASSES = 5               # UTPM sınıf sayısı

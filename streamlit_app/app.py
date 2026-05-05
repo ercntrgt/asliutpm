@@ -208,6 +208,28 @@ with col_info:
                           if p['yearly_mean_lst'] else "?")
                 p2.metric("Q4 yıl sayısı", f"{p['years_in_top_quartile']}/5")
 
+            # Priority decision layer
+            if "priority" in summary:
+                pr = summary["priority"]
+                priority_emoji = {
+                    "1_ACIL_MUDAHALE": "🔴",
+                    "2_YUKSEK_ONCELIK": "🟠",
+                    "3_SICAK_ACIK": "🟧",
+                    "4_BLOKLU_ORTA": "🟫",
+                    "5_ORTA": "🟡",
+                    "6_ORTA_ACIK": "🟨",
+                    "7_BLOKLU_SERIN": "🟢",
+                    "8_SERIN_ORTA": "🟩",
+                    "9_KORUMA": "💚",
+                }.get(pr["label"], "")
+                pr_nice = pr["label"].split("_", 1)[1].replace("_", " ").title()
+                st.markdown(f"**Karar Önceliği:** {priority_emoji} `{pr_nice}`")
+                c1, c2 = st.columns(2)
+                c1.metric("Wind Blockage",
+                          f"{pr['wind_blockage_index']:.3f}" if pr['wind_blockage_index'] else "?")
+                c2.metric("UTPM × Block tier",
+                          f"{pr['utpm_tier']}/{pr['block_tier']}")
+
             # Komşuluk
             if comparison:
                 st.markdown(f"**Komşuluk** (r={radius_m} m, n={comparison['n_neighbors']})")
