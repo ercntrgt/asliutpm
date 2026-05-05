@@ -451,6 +451,38 @@ def ghsl_built_height(region, year: int = 2018):
     return img.clip(region)
 
 
+def dynamic_world_built_probability(
+    region,
+    years: Iterable[int] = (2020, 2021, 2022, 2023, 2024),
+    months: Iterable[int] = (6, 7, 8),
+):
+    """Dynamic World 'built' probability medyan (yaz, 5 yıl).
+
+    `GOOGLE/DYNAMICWORLD/V1` 0-1 sürekli probability — 10m. ESA WorldCover
+    binary (50=built) yerine smooth gradient bilgi.
+
+    Returns
+    -------
+    ee.Image
+        Tek bant ``built_prob`` (0-1 float). Yaz medyan 2020-2024.
+    """
+    import ee
+
+    years = list(years)
+    months = list(months)
+    start = f"{min(years)}-01-01"
+    end = f"{max(years)}-12-31"
+
+    coll = (
+        ee.ImageCollection("GOOGLE/DYNAMICWORLD/V1")
+        .filterBounds(region)
+        .filterDate(start, end)
+        .filter(ee.Filter.calendarRange(min(months), max(months), "month"))
+        .select("built")
+    )
+    return coll.median().rename("built_prob").clip(region)
+
+
 def esa_worldcover_impervious(region, version: str = "v200"):
     """ESA WorldCover'dan geçirimsiz yüzey (built-up = sınıf 50) binary maskesi.
 

@@ -83,6 +83,9 @@ ALBEDO_RASTER = DATA_PROCESSED / "albedo_summer_median_2020_2024.tif"
 WORLDCOVER_VERSION = "v200"        # v200 = 2021, v100 = 2020
 IMPERVIOUS_RASTER = DATA_PROCESSED / "impervious_esa_worldcover_2021.tif"
 
+# --- Dynamic World (gradient built probability) ---
+DYNAMIC_WORLD_RASTER = DATA_PROCESSED / "dw_built_summer_median_2020_2024.tif"
+
 # --- Birleştirilmiş 30m grid (LST + NDVI + Albedo + Impervious) ---
 GRID_30M_VARIABLES = DATA_PROCESSED / "grid_30m_variables.gpkg"
 
@@ -101,12 +104,14 @@ GRID_30M_FULL = DATA_PROCESSED / "grid_30m_full.gpkg"  # 7 değişkenin tümü
 GRID_30M_STANDARDIZED = DATA_PROCESSED / "grid_30m_standardized.gpkg"
 SKEW_THRESHOLD_LOG = 1.0   # |skew| > bu değer ⇒ log1p uygula
 
-# 8 bağımsız değişken — modelleme için kanonik liste
-# Hafta 17'de wind_blockage_index eklendi (rüzgar yönünde bina yüksekliği toplamı)
+# 9 bağımsız değişken — modelleme için kanonik liste
+# Hafta 17'de wind_blockage_index eklendi
+# Hafta 21'de dw_built_pct eklendi (Dynamic World gradient impervious)
 FEATURE_COLUMNS = [
     "ndvi_mean",
     "albedo_mean",
-    "impervious_pct",
+    "impervious_pct",          # ESA WorldCover (binary, kalıyor — kıyaslama için)
+    "dw_built_pct",            # Dynamic World gradient probability ×100
     "building_height_mean",
     "building_density_per_km2",
     "road_density_m_per_km2",

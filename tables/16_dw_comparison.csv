@@ -1,0 +1,10 @@
+﻿metrik,eski_8feat,yeni_10feat,delta
+Random CV R²,0.85,0.873,0.023
+Spatial CV R²,0.724,0.752,0.028
+Hold-out R²,0.094,0.146,0.052
+RMSE (°C),1.204,1.111,-0.093
+UTPM×LST r,0.383,0.495,0.112
+Moran's I,0.74,0.801,0.061
+Çok sıcak hücre,973.0,1234.0,261.0
+LISA HH,5263.0,5874.0,611.0
+LISA LL,6216.0,6515.0,299.0

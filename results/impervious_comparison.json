@@ -1,0 +1,20 @@
+{
+  "esa_worldcover": {
+    "n_unique_values": 10,
+    "n_zero": 9885,
+    "n_full": 7222,
+    "median": 44.44,
+    "lst_corr_pearson": 0.3382477152900547,
+    "lst_corr_spearman": 0.2778224273949225
+  },
+  "dynamic_world": {
+    "n_unique_values": 5966,
+    "median": 68.96640444864278,
+    "lst_corr_pearson": 0.5430253497078399,
+    "lst_corr_spearman": 0.2022993497816728
+  },
+  "esa_dw_correlation": 0.6336579741102308,
+  "improvement_pearson": 0.20477763441778518,
+  "improvement_spearman": -0.07552307761324972,
+  "recommendation": "USE_DYNAMIC_WORLD"
+}
