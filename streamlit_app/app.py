@@ -48,6 +48,17 @@ st.caption(
 
 
 # ============================================================================
+# Yardımcı fonksiyonlar
+# ============================================================================
+def _utpm_color(class_idx):
+    """Jenks 5-sınıf rengi."""
+    colors = ["#264653", "#2A9D8F", "#E9C46A", "#F4A261", "#E76F51"]
+    if class_idx is None or class_idx < 0:
+        return "#cccccc"
+    return colors[min(int(class_idx), 4)]
+
+
+# ============================================================================
 # Veri yükleme (cached)
 # ============================================================================
 @st.cache_data
@@ -152,14 +163,6 @@ with col_map:
     # Streamlit-folium tıklama
     out = st_folium(m, height=500, width=None,
                     returned_objects=["last_clicked"])
-
-
-def _utpm_color(class_idx):
-    """Jenks 5-sınıf rengi."""
-    colors = ["#264653", "#2A9D8F", "#E9C46A", "#F4A261", "#E76F51"]
-    if class_idx is None or class_idx < 0:
-        return "#cccccc"
-    return colors[min(int(class_idx), 4)]
 
 
 # ============================================================================
