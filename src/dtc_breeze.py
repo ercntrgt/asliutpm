@@ -101,6 +101,91 @@ def _ray_distance_to_line(
     return float(d)
 
 
+def wind_blockage_index_for_geometries(
+    geometries: pd.Series | gpd.GeoSeries,
+    grid_with_height: gpd.GeoDataFrame,
+    height_col: str = "building_height_mean",
+    wind_from_deg: float = 165,
+    ray_length_m: float = 20000,
+    n_samples: int = 50,
+    distance_decay: bool = True,
+) -> np.ndarray:
+    """Her hücre için ray boyunca bina yüksekliği engelleme indeksi.
+
+    Ray'i ``n_samples`` parçaya böler, her sample noktasına en yakın grid
+    hücresinin ``building_height_mean`` değerini alır, mesafe-ağırlıklı
+    toplar. Yakın binalar daha çok engelliyor varsayılır.
+
+    Parameters
+    ----------
+    geometries : GeoSeries
+        Hücre poligonları (centroid kullanılır).
+    grid_with_height : GeoDataFrame
+        ``height_col`` kolonu olan grid (ideal: tüm 30 m grid).
+        CRS aynı olmalı.
+    height_col : str
+        Bina yüksekliği kolonu. NaN → 0 (bina yok).
+    wind_from_deg : float
+        Hakim rüzgar kaynak yönü (default 165° SSE).
+    ray_length_m : float
+        Ray uzunluğu (default 20 km).
+    n_samples : int
+        Ray boyunca sample sayısı (default 50, ~400 m aralık).
+    distance_decay : bool
+        ``True`` ise yakın binalar daha çok ağırlık alır
+        (linear decay: w(d) = 1 - d/ray_length).
+
+    Returns
+    -------
+    np.ndarray, shape (n_cells,)
+        Engelleme indeksi (metre cinsinden ağırlıklı bina yüksekliği toplamı / n_samples).
+        ~0 = açık (bina yok), >5 = orta engelleme, >10 = yoğun blokaj.
+    """
+    from scipy.spatial import cKDTree
+
+    if grid_with_height.crs != geometries.crs:
+        raise ValueError(f"CRS uyumsuz: grid={grid_with_height.crs}, geom={geometries.crs}")
+
+    # Grid centroidleri için kdtree
+    grid_xy = np.column_stack([
+        grid_with_height.geometry.centroid.x.to_numpy(),
+        grid_with_height.geometry.centroid.y.to_numpy(),
+    ])
+    heights = grid_with_height[height_col].fillna(0.0).to_numpy(dtype=float)
+    tree = cKDTree(grid_xy)
+
+    # Ray yön vektörü
+    rad = np.radians(wind_from_deg)
+    dx = np.sin(rad)
+    dy = np.cos(rad)
+
+    # Sample mesafeleri (her hücre için aynı)
+    ts = np.linspace(0, 1, n_samples) * ray_length_m  # 0..ray_length_m
+
+    # Distance decay weights (yakın = ağır)
+    if distance_decay:
+        weights = 1.0 - ts / ray_length_m
+    else:
+        weights = np.ones_like(ts)
+
+    # Origin koordinatları
+    origin_xy = np.column_stack([
+        geometries.centroid.x.to_numpy(),
+        geometries.centroid.y.to_numpy(),
+    ])
+
+    n_cells = len(origin_xy)
+    blockage = np.zeros(n_cells, dtype=float)
+    for i in range(n_cells):
+        sx = origin_xy[i, 0] + dx * ts
+        sy = origin_xy[i, 1] + dy * ts
+        sample_pts = np.column_stack([sx, sy])
+        _, idx = tree.query(sample_pts, k=1)
+        sample_h = heights[idx]
+        blockage[i] = float(np.sum(sample_h * weights) / n_samples)
+    return blockage
+
+
 def dtc_breeze_for_geometries(
     geometries: pd.Series | gpd.GeoSeries,
     coastline: gpd.GeoDataFrame,

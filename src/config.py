@@ -101,7 +101,8 @@ GRID_30M_FULL = DATA_PROCESSED / "grid_30m_full.gpkg"  # 7 değişkenin tümü
 GRID_30M_STANDARDIZED = DATA_PROCESSED / "grid_30m_standardized.gpkg"
 SKEW_THRESHOLD_LOG = 1.0   # |skew| > bu değer ⇒ log1p uygula
 
-# 7 bağımsız değişken — modelleme için kanonik liste
+# 8 bağımsız değişken — modelleme için kanonik liste
+# Hafta 17'de wind_blockage_index eklendi (rüzgar yönünde bina yüksekliği toplamı)
 FEATURE_COLUMNS = [
     "ndvi_mean",
     "albedo_mean",
@@ -110,6 +111,7 @@ FEATURE_COLUMNS = [
     "building_density_per_km2",
     "road_density_m_per_km2",
     "dtc_breeze_m",
+    "wind_blockage_index",
 ]
 TARGET_COLUMN = "lst_mean"
 

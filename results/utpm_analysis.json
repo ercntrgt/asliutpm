@@ -2,89 +2,94 @@
   "shap_importance": [
     {
       "feature": "albedo_mean",
-      "shap_mean_abs": 0.978503957490391,
-      "shap_normalized": 0.36701997916857515
+      "shap_mean_abs": 0.9772030681441527,
+      "shap_normalized": 0.353548846119753
     },
     {
       "feature": "ndvi_mean",
-      "shap_mean_abs": 0.7113913269584133,
-      "shap_normalized": 0.26683063262270545
+      "shap_mean_abs": 0.7135550164087557,
+      "shap_normalized": 0.258161850815088
     },
     {
       "feature": "dtc_breeze_m",
-      "shap_mean_abs": 0.4852792527019693,
-      "shap_normalized": 0.18201988847793446
+      "shap_mean_abs": 0.46444738645336225,
+      "shap_normalized": 0.16803553213946568
     },
     {
       "feature": "impervious_pct",
-      "shap_mean_abs": 0.25380639935829796,
-      "shap_normalized": 0.0951984084400071
+      "shap_mean_abs": 0.2483413760529621,
+      "shap_normalized": 0.08984909054170553
+    },
+    {
+      "feature": "wind_blockage_index",
+      "shap_mean_abs": 0.16792923546897784,
+      "shap_normalized": 0.06075624336974681
     },
     {
       "feature": "road_density_m_per_km2",
-      "shap_mean_abs": 0.10627698019035212,
-      "shap_normalized": 0.039862664588094066
+      "shap_mean_abs": 0.09856101298997491,
+      "shap_normalized": 0.03565904933268105
     },
     {
       "feature": "building_height_mean",
-      "shap_mean_abs": 0.06840889368205237,
-      "shap_normalized": 0.02565899763811501
+      "shap_mean_abs": 0.03932305337737916,
+      "shap_normalized": 0.014226950979473393
     },
     {
       "feature": "building_density_per_km2",
-      "shap_mean_abs": 0.037539463299895735,
-      "shap_normalized": 0.014080406045228
+      "shap_mean_abs": 0.027519629210021487,
+      "shap_normalized": 0.009956511056933449
     },
     {
       "feature": "is_dtc_saturated",
-      "shap_mean_abs": 0.024871904697458133,
-      "shap_normalized": 0.00932902301934074
+      "shap_mean_abs": 0.027103413662934953,
+      "shap_normalized": 0.009805925645153061
     }
   ],
   "utpm_weights": {
-    "ndvi_mean": 0.26934334286843126,
-    "albedo_mean": 0.370476159791386,
-    "impervious_pct": 0.09609487978556745,
-    "building_height_mean": 0.025900625166508692,
-    "building_density_per_km2": 0.01421299944421698,
-    "road_density_m_per_km2": 0.04023804624779303,
-    "dtc_breeze_m": 0.1837339466960967
+    "ndvi_mean": 0.26071843641691284,
+    "albedo_mean": 0.3570500523850387,
+    "impervious_pct": 0.09073886914567328,
+    "building_height_mean": 0.014367840959604661,
+    "building_density_per_km2": 0.01005511072505714,
+    "road_density_m_per_km2": 0.036012182112798864,
+    "dtc_breeze_m": 0.16969959373766993,
+    "wind_blockage_index": 0.061357914517244566
   },
-  "utpm_sign_flips": {
-    "ndvi_mean_z": -1,
-    "dtc_breeze_m_z": 1
-  },
-  "utpm_lst_correlation": 0.3713729326713416,
-  "utpm_persistence_correlation": 0.33347636982944856,
+  "utpm_lst_correlation": 0.3830319626377148,
+  "utpm_persistence_correlation": 0.3242469976471726,
   "moran_i": {
-    "I": 0.7379950614248304,
+    "I": 0.7401561312090084,
     "expected_I": -3.5403242937053036e-05,
-    "z_score": 249.41407750886364,
+    "z_score": 250.14440132672348,
     "p_value": 0.0,
     "p_sim": 0.01
   },
   "lisa_cluster_counts": {
-    "NS": 16919,
-    "LL": 5860,
-    "HH": 5181,
+    "NS": 16496,
+    "LL": 6216,
+    "HH": 5263,
     "HL": 146,
-    "LH": 141
+    "LH": 126
   },
   "jenks_bins": [
     0.0,
-    21.288376892097478,
-    33.626842209093816,
-    43.59481239602801,
-    58.560452717656176,
+    21.919001902439135,
+    34.27527578140168,
+    44.33286255417791,
+    58.61887504481509,
     100.0
   ],
   "jenks_class_counts": {
-    "class_0": 4049,
-    "class_1": 6888,
-    "class_2": 9641,
-    "class_3": 6788,
-    "class_4": 881
+    "class_0": 4089,
+    "class_1": 6914,
+    "class_2": 9412,
+    "class_3": 6859,
+    "class_4": 973
   },
-  "shap_sample_n": 1000,
-  "moran_k_neighbors": 8
+  "blockage_correlations": {
+    "lst": 0.15285211628190534,
+    "dtc": -0.0035263152931652455,
+    "building_height": 0.5879041370992107
+  }
 }
