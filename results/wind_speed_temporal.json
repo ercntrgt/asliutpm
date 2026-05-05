@@ -1,0 +1,53 @@
+{
+  "yearly": [
+    {
+      "year": 2020,
+      "lst_pilot_mean_C": 40.78,
+      "wind_speed_mean_m_s": 2.8,
+      "wind_speed_median_m_s": 3.01,
+      "wind_dir_mean_deg": 154.2,
+      "n_hours": 368
+    },
+    {
+      "year": 2021,
+      "lst_pilot_mean_C": 41.73,
+      "wind_speed_mean_m_s": 2.52,
+      "wind_speed_median_m_s": 2.82,
+      "wind_dir_mean_deg": 146.1,
+      "n_hours": 368
+    },
+    {
+      "year": 2022,
+      "lst_pilot_mean_C": 44.69,
+      "wind_speed_mean_m_s": 2.79,
+      "wind_speed_median_m_s": 2.92,
+      "wind_dir_mean_deg": 160.9,
+      "n_hours": 368
+    },
+    {
+      "year": 2023,
+      "lst_pilot_mean_C": 42.6,
+      "wind_speed_mean_m_s": 2.81,
+      "wind_speed_median_m_s": 3.07,
+      "wind_dir_mean_deg": 161.3,
+      "n_hours": 368
+    },
+    {
+      "year": 2024,
+      "lst_pilot_mean_C": 42.39,
+      "wind_speed_mean_m_s": 2.83,
+      "wind_speed_median_m_s": 2.99,
+      "wind_dir_mean_deg": 156.4,
+      "n_hours": 368
+    }
+  ],
+  "lst_wind_pearson": 0.23516783387157442,
+  "lst_wind_spearman": 0.1,
+  "n_years": 5,
+  "year_2022": {
+    "lst": 44.69,
+    "wind_speed": 2.79,
+    "lst_anomaly_vs_others": 2.8149999999999977,
+    "wind_anomaly_vs_others": 0.04999999999999982
+  }
+}

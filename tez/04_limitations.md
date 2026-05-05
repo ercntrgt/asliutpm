@@ -153,17 +153,30 @@ Yıllar arası tutarlı (2020-2024 arası 156°-164° dağılımı).
 
 ---
 
-## Sınırlılık Master Tablosu
+## L11 — ERA5 mekânsal çözünürlük yetersiz (yeni — Hafta 19)
 
-| # | Sınırlılık | Önem | Hafifletme/Sonraki çalışma |
+**Sorun:** ERA5 hourly native ~31 km. Konyaaltı pilot bölgesi (5×5 km) tek ERA5 piksele düşer. Pilot içi rüzgar şiddeti varyansı yakalanamaz.
+
+**Etki:** ERA5 wind speed feature olarak modele eklenemez (28K hücrede aynı değer = sıfır bilgi). Yıllık temporal varyans %12, LST yıllık varyansını açıklayamıyor (r=+0.10 Spearman). 2022 sıcak dalgası yerel rüzgar değişiminden kaynaklanmamış (anomali sadece +0.05 m/s).
+
+**Hafifletme:** Wind speed feature olarak eklenmedi. Wind direction bilgisi DTC_breeze + wind_blockage_index üzerinden zaten modelde.
+
+**Sonraki çalışma:** WRF mezoskala simülasyonu (1-3 km çözünürlük) — pilot içi rüzgar dinamiği için.
+
+Detaylı rapor: `tez/09_wind_speed_temporal.md`.
+
+## Sınırlılık Master Tablosu (güncellenmiş)
+
+| # | Sınırlılık | Önem | Durum |
 |---|---|---|---|
-| L1 | RF out-of-area extrapolation R²=0.10 | KRİTİK | GeoRF, hierarchical model |
-| L2 | DTC saturated outlier (1066 hücre) | KRİTİK | is_dtc_saturated flag eklendi |
-| L3 | NDVI non-lineer (Pearson 0.05) | KRİTİK | RF doğal olarak yakaladı |
-| L4 | Building NaN %81 doldurma | ORTA | semantic 0 doğru, RF kullanıyor |
-| L5 | GHSL hücre-level r=-0.015 | ORTA | sadece median validation kullanıldı |
-| L6 | TS 9111 konut varsayımı | ORTA | belediye kullanım amacı verirse düzelir |
-| L7 | Albedo+LST pozitif | ORTA | Akdeniz literatürüyle uyumlu |
-| L8 | Rüzgar 165° kalibrasyonsuz | DÜŞÜK | ERA5 ile yeniden hesap |
-| L9 | 5-yıl medyan statik | DÜŞÜK | yıllık feature kompoziti |
-| L10 | Folium render yavaş | DÜŞÜK | vector tile |
+| L1 | RF out-of-area extrapolation R²=0.10 | KRİTİK | Açık (RF doğası) |
+| L2 | DTC saturated outlier (1066 hücre) | KRİTİK | Hafifletildi (is_dtc_saturated flag) |
+| L3 | NDVI non-lineer (Pearson 0.05) | KRİTİK | Çözüldü (RF yakaladı, SHAP %27) |
+| L4 | Building NaN %81 doldurma | ORTA | Hafifletildi (semantic 0) |
+| L5 | GHSL hücre-level r=-0.015 | ORTA | Hafifletildi (median validation) |
+| L6 | TS 9111 konut varsayımı | ORTA | Açık (belediye kullanım amacı verirse) |
+| L7 | Albedo+LST pozitif | ORTA | Çözüldü (Akdeniz literatürüyle uyumlu) |
+| **L8** | **Rüzgar 165° kalibrasyonsuz** | DÜŞÜK | **✅ KAPANDI (ERA5 ile 6.1° fark)** |
+| L9 | 5-yıl medyan statik | DÜŞÜK | Açık |
+| L10 | Folium render yavaş | DÜŞÜK | Açık (vector tile çözer) |
+| **L11** | **ERA5 mekânsal yetersiz** | DÜŞÜK | **Açık (WRF gerekir)** |
