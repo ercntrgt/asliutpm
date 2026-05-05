@@ -127,7 +127,19 @@ GRID_30M_MODELING = DATA_PROCESSED / "grid_30m_modeling.gpkg"
 # Notebook 07 sonrası karar: VIF analizi multicollinearity göstermediği için
 # 7 değişkenin tümü modelde tutulacak. Random Forest Hafta 10'da feature
 # importance ile zayıf prediktörleri yorumlayacak.
-SELECTED_FEATURES = list(FEATURE_COLUMNS)  # tüm 7
+# Hafta 22 sonrası: 7 minimal feature (impervious/saturated/density çıkarıldı).
+# Hafta 24: spatial_lag_lst eklendi (residual Moran I hafifletme).
+SELECTED_FEATURES = list(FEATURE_COLUMNS)  # tüm
+MINIMAL_FEATURES = [
+    "ndvi_mean",
+    "albedo_mean",
+    "dw_built_pct",
+    "building_height_mean",
+    "road_density_m_per_km2",
+    "dtc_breeze_m",
+    "wind_blockage_index",
+    "spatial_lag_lst",   # Hafta 24: 8-NN komşu LST mean
+]
 
 # --- Hafta 10: Random Forest + validation ---
 PREDICTIONS_GPKG = DATA_PROCESSED / "grid_30m_predictions.gpkg"

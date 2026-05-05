@@ -1,96 +1,74 @@
 {
   "shap_importance": [
     {
-      "feature": "albedo_mean",
-      "shap_mean_abs": 0.9297354531167124,
-      "shap_normalized": 0.3209913386307874
+      "feature": "spatial_lag_lst",
+      "shap_mean_abs": 1.826013157153625,
+      "shap_normalized": 0.9359436502835717
     },
     {
       "feature": "ndvi_mean",
-      "shap_mean_abs": 0.7179167721531475,
-      "shap_normalized": 0.24786089951332035
-    },
-    {
-      "feature": "dw_built_pct",
-      "shap_mean_abs": 0.49975323684567596,
-      "shap_normalized": 0.1725398982499863
+      "shap_mean_abs": 0.03370373036613138,
+      "shap_normalized": 0.017275227346237768
     },
     {
       "feature": "dtc_breeze_m",
-      "shap_mean_abs": 0.40960852400776737,
-      "shap_normalized": 0.1414174193261931
+      "shap_mean_abs": 0.02714556538109588,
+      "shap_normalized": 0.013913765874172576
     },
     {
-      "feature": "impervious_pct",
-      "shap_mean_abs": 0.11188734143922423,
-      "shap_normalized": 0.03862912550448698
+      "feature": "dw_built_pct",
+      "shap_mean_abs": 0.02425099039608017,
+      "shap_normalized": 0.012430118800282847
+    },
+    {
+      "feature": "albedo_mean",
+      "shap_mean_abs": 0.02169453550768795,
+      "shap_normalized": 0.011119778997607598
     },
     {
       "feature": "wind_blockage_index",
-      "shap_mean_abs": 0.08173318493635708,
-      "shap_normalized": 0.028218397346611163
+      "shap_mean_abs": 0.008591904924983195,
+      "shap_normalized": 0.004403877829069565
     },
     {
       "feature": "road_density_m_per_km2",
-      "shap_mean_abs": 0.06492431580117701,
-      "shap_normalized": 0.022415132141994015
+      "shap_mean_abs": 0.007278089273420848,
+      "shap_normalized": 0.0037304667904329474
     },
     {
       "feature": "building_height_mean",
-      "shap_mean_abs": 0.04105480258055247,
-      "shap_normalized": 0.014174178249713296
-    },
-    {
-      "feature": "building_density_per_km2",
-      "shap_mean_abs": 0.027424213577787692,
-      "shap_normalized": 0.009468214853721006
-    },
-    {
-      "feature": "is_dtc_saturated",
-      "shap_mean_abs": 0.012412436980868913,
-      "shap_normalized": 0.004285396183186361
+      "shap_mean_abs": 0.002308239254925715,
+      "shap_normalized": 0.0011831140786250367
     }
   ],
   "utpm_weights": {
-    "ndvi_mean": 0.24892765312792436,
-    "albedo_mean": 0.3223728339429294,
-    "impervious_pct": 0.038795379073895526,
-    "dw_built_pct": 0.17328248233841242,
-    "building_height_mean": 0.014235181642792286,
-    "building_density_per_km2": 0.009508964534041243,
-    "road_density_m_per_km2": 0.02251160328077084,
-    "dtc_breeze_m": 0.1420260572498446,
-    "wind_blockage_index": 0.02833984480938942
+    "ndvi_mean": 0.017275227346237765,
+    "albedo_mean": 0.011119778997607596,
+    "dw_built_pct": 0.012430118800282844,
+    "building_height_mean": 0.0011831140786250365,
+    "road_density_m_per_km2": 0.0037304667904329465,
+    "dtc_breeze_m": 0.013913765874172573,
+    "wind_blockage_index": 0.004403877829069564,
+    "spatial_lag_lst": 0.9359436502835715
   },
-  "utpm_lst_correlation": 0.4950642257266769,
-  "utpm_persistence_correlation": 0.3331766713354247,
+  "utpm_lst_correlation": 0.9933251110409279,
   "moran_i": {
-    "I": 0.8009261314144407,
+    "I": 0.9891700050257478,
     "expected_I": -3.5403242937053036e-05,
-    "z_score": 270.6813496873503,
+    "z_score": 334.29752047048277,
     "p_value": 0.0,
     "p_sim": 0.01
   },
   "lisa_cluster_counts": {
-    "NS": 15688,
-    "LL": 6515,
-    "HH": 5874,
-    "LH": 96,
-    "HL": 74
+    "NS": 16012,
+    "HH": 8691,
+    "LL": 3544
   },
-  "jenks_bins": [
-    0.0,
-    21.918120626104905,
-    36.20400029833839,
-    47.40530484578425,
-    60.51307959218239,
-    100.0
-  ],
   "jenks_class_counts": {
-    "class_0": 2654,
-    "class_1": 5618,
-    "class_2": 9427,
-    "class_3": 9314,
-    "class_4": 1234
+    "class_0": 1281,
+    "class_1": 1948,
+    "class_2": 7169,
+    "class_3": 11782,
+    "class_4": 6067
   }
 }

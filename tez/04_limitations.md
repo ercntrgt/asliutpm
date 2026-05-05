@@ -153,7 +153,23 @@ Yıllar arası tutarlı (2020-2024 arası 156°-164° dağılımı).
 
 ---
 
-## L11 — ERA5 mekânsal çözünürlük yetersiz (yeni — Hafta 19)
+## L13 — RF residuals mekânsal otokorelasyona sahip (Hafta 23-24)
+
+**Tespit (Hafta 23):** RF residuals'ında Moran's I = 0.6552 (z=221, p<0.001). Model UTPM mekânsal yapısının (Moran I=0.801) ancak %18'ini açıklıyor; %82'si residual'da kalıyor.
+
+**Hafta 24 spatial_lag_lst denemesi:** k=8 NN komşu LST eklendi → görünüşte residual Moran I = 0.103 (%84 azalma) ve R² 0.87 → 0.99. **Ancak bu target leakage** — spatial_lag_lst × LST Pearson r = 0.996, SHAP %93.6 ağırlık. Komşu LST'yi target'ın proxy'si olarak alıyor → "predict before you know" production sorunu.
+
+**Karar:** L13 **akademik anlamda hala açık**. Hafta 22 7-feature minimal model production modeli (R²=0.87, residual Moran=0.66 dürüst sınırlılık).
+
+**Sonraki çalışma:** Geographically Weighted Random Forest (GWRF, Quiñones et al. 2021), RF-kriging hibrit (Hengl et al. 2018), nested spatial CV ile fold-içi spatial_lag.
+
+Detay: `tez/14_spatial_rf.md`
+
+## L14 — Spatial lag pure out-of-sample test edilmedi (Hafta 24)
+
+Spatial lag feature'ı tüm grid'de hesaplandı, train/test split sonra yapıldı. Pure out-of-sample protokol için fold içinde train-only LST'lerle yeniden hesap gerekir.
+
+## L11 — ERA5 mekânsal çözünürlük yetersiz (Hafta 19)
 
 **Sorun:** ERA5 hourly native ~31 km. Konyaaltı pilot bölgesi (5×5 km) tek ERA5 piksele düşer. Pilot içi rüzgar şiddeti varyansı yakalanamaz.
 

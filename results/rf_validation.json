@@ -1,123 +1,78 @@
 {
-  "random_cv": {
-    "mean": {
-      "rmse": 1.111,
-      "mae": 0.832,
-      "r2": 0.873
-    },
-    "std": {
-      "rmse": 0.016,
-      "mae": 0.011,
-      "r2": 0.008
-    }
+  "n_features": 8,
+  "features": [
+    "ndvi_mean",
+    "albedo_mean",
+    "dw_built_pct",
+    "building_height_mean",
+    "road_density_m_per_km2",
+    "dtc_breeze_m",
+    "wind_blockage_index",
+    "spatial_lag_lst"
+  ],
+  "vif": {
+    "spatial_lag_lst_z": 2.389215525323969,
+    "dw_built_pct_z": 2.345644567429753,
+    "albedo_mean_z": 2.1577052386296764,
+    "ndvi_mean_z": 1.3111343212434525,
+    "wind_blockage_index_z": 1.264010137333315,
+    "dtc_breeze_m_z": 1.2435171204279463,
+    "road_density_m_per_km2_z": 1.236246110671352,
+    "building_height_mean_z": 1.0770144828131856
   },
-  "spatial_cv": {
-    "mean": {
-      "rmse": 1.343,
-      "mae": 1.024,
-      "r2": 0.752
-    },
-    "std": {
-      "rmse": 0.079,
-      "mae": 0.064,
-      "r2": 0.138
-    }
+  "cv_5seed_5fold": {
+    "r2_mean": 0.9935620286243716,
+    "r2_std": 0.0003261454290596519,
+    "r2_ci95_low": 0.9934367535474746,
+    "r2_ci95_high": 0.9936884029364059,
+    "rmse_mean": 0.2499797111956617,
+    "rmse_std": 0.005546316646607786
   },
-  "holdout": {
-    "metrics": {
-      "rmse": 1.4029370151338079,
-      "mae": 1.1018195368618942,
-      "r2": 0.14597730941288334
-    },
-    "n_train": 22608,
-    "n_test": 5639,
-    "test_neighborhoods": [
-      "ALTINKUM",
-      "HURMA",
-      "GÜRSU"
-    ]
-  },
-  "permutation_null": {
-    "n_permutations": 50,
-    "null_r2_mean": -0.05592067687170028,
-    "null_r2_std": 0.0026946850352384923,
-    "null_r2_99p": -0.05033259604217826,
-    "null_r2_max": -0.049551014039846596
-  },
-  "saturated_rmse": 0.15813473242651635,
-  "nonsat_rmse": 0.4105069179304238,
-  "feature_importance": [
+  "residual_moran_hafta23": 0.6552,
+  "residual_moran_hafta24": 0.10297292053219657,
+  "residual_moran_p": 1.6465394651854735e-265,
+  "moran_reduction_pct": 84.28374228751579,
+  "decision": "L13_KAPANDI",
+  "feature_importance_shap": [
     {
-      "feature": "dw_built_pct",
-      "gini_importance": 0.08194187299039396,
-      "permutation_importance_mean": 0.49284260936935487,
-      "permutation_importance_std": 0.003347009733833644
+      "feature": "spatial_lag_lst",
+      "shap_mean_abs": 1.826013157153625,
+      "shap_normalized": 0.9359436502835717
     },
     {
       "feature": "ndvi_mean",
-      "gini_importance": 0.12978924424686036,
-      "permutation_importance_mean": 0.35218061909879134,
-      "permutation_importance_std": 0.002789123697288247
+      "shap_mean_abs": 0.03370373036613138,
+      "shap_normalized": 0.017275227346237768
     },
     {
       "feature": "dtc_breeze_m",
-      "gini_importance": 0.10398231612847161,
-      "permutation_importance_mean": 0.21417423364931237,
-      "permutation_importance_std": 0.0009966198501036247
+      "shap_mean_abs": 0.02714556538109588,
+      "shap_normalized": 0.013913765874172576
+    },
+    {
+      "feature": "dw_built_pct",
+      "shap_mean_abs": 0.02425099039608017,
+      "shap_normalized": 0.012430118800282847
     },
     {
       "feature": "albedo_mean",
-      "gini_importance": 0.6406011989132316,
-      "permutation_importance_mean": 0.19636156118484477,
-      "permutation_importance_std": 0.001959652191722857
-    },
-    {
-      "feature": "impervious_pct",
-      "gini_importance": 0.012379036355932321,
-      "permutation_importance_mean": 0.04225706780237108,
-      "permutation_importance_std": 0.0005853646870834188
-    },
-    {
-      "feature": "is_dtc_saturated",
-      "gini_importance": 0.004753005702491484,
-      "permutation_importance_mean": 0.027934329100949028,
-      "permutation_importance_std": 0.0004919319085368712
+      "shap_mean_abs": 0.02169453550768795,
+      "shap_normalized": 0.011119778997607598
     },
     {
       "feature": "wind_blockage_index",
-      "gini_importance": 0.011598015341169967,
-      "permutation_importance_mean": 0.024266759022006246,
-      "permutation_importance_std": 0.0002497236984265043
+      "shap_mean_abs": 0.008591904924983195,
+      "shap_normalized": 0.004403877829069565
     },
     {
       "feature": "road_density_m_per_km2",
-      "gini_importance": 0.009572069244738902,
-      "permutation_importance_mean": 0.018558608769847162,
-      "permutation_importance_std": 0.00020911688438220104
+      "shap_mean_abs": 0.007278089273420848,
+      "shap_normalized": 0.0037304667904329474
     },
     {
       "feature": "building_height_mean",
-      "gini_importance": 0.0032204042077228464,
-      "permutation_importance_mean": 0.009348278610556404,
-      "permutation_importance_std": 0.00010162945229060751
-    },
-    {
-      "feature": "building_density_per_km2",
-      "gini_importance": 0.00216283686898703,
-      "permutation_importance_mean": 0.004125052013513364,
-      "permutation_importance_std": 6.756343770960203e-05
+      "shap_mean_abs": 0.002308239254925715,
+      "shap_normalized": 0.0011831140786250367
     }
-  ],
-  "n_features": 10,
-  "vif": {
-    "dw_built_pct_z": 2.140728922106008,
-    "impervious_pct_z": 1.9894722351251144,
-    "albedo_mean_z": 1.85664717655099,
-    "wind_blockage_index_z": 1.5468385603707777,
-    "ndvi_mean_z": 1.3640694707462337,
-    "building_density_per_km2_z": 1.3412333249435675,
-    "road_density_m_per_km2_z": 1.3226965702056122,
-    "dtc_breeze_m_z": 1.2883194212562905,
-    "building_height_mean_z": 1.0830134966023417
-  }
+  ]
 }
