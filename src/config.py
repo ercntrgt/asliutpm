@@ -137,3 +137,19 @@ LST_YEARLY_RASTERS = {
 GRID_30M_YEARLY = DATA_PROCESSED / "grid_30m_yearly_lst.gpkg"
 CROSS_YEAR_VALIDATION_JSON = RESULTS / "cross_year_validation.json"
 PERSISTENCE_GPKG = DATA_PROCESSED / "grid_30m_persistence.gpkg"
+
+# --- Hafta 12-13: SHAP + UTPM lineer indeks + mekânsal analiz ---
+SHAP_VALUES_NPY = RESULTS / "shap_values.npy"
+SHAP_SAMPLE_GPKG = DATA_PROCESSED / "grid_30m_shap_sample.gpkg"
+UTPM_GPKG = DATA_PROCESSED / "grid_30m_utpm.gpkg"
+UTPM_RESULTS_JSON = RESULTS / "utpm_analysis.json"
+SHAP_SAMPLE_N = 1000              # SHAP hesabı için örneklem (approximate=True ile)
+MORAN_K_NEIGHBORS = 8             # Moran'a giren k-NN
+JENKS_K_CLASSES = 5               # UTPM sınıf sayısı
+
+# UTPM yön çevirme: NDVI yüksek = serin → çevir
+# Diğer feature'lar pozitif (yüksek değer = sıcak); RF importance'ları zaten yön bağımsız.
+UTPM_SIGN_FLIPS = {
+    "ndvi_mean_z": -1,            # yüksek NDVI = serin
+    "dtc_breeze_m_z": +1,         # yüksek DTC = sıcak (kara içi), ama saturated outlier var
+}

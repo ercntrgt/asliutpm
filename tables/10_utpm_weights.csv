@@ -1,0 +1,8 @@
+﻿feature,shap_weight,sign_flip
+ndvi_mean,0.2693,-1.0
+albedo_mean,0.3705,1.0
+impervious_pct,0.0961,1.0
+building_height_mean,0.0259,1.0
+building_density_per_km2,0.0142,1.0
+road_density_m_per_km2,0.0402,1.0
+dtc_breeze_m,0.1837,1.0
