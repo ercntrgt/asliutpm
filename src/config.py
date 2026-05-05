@@ -129,3 +129,11 @@ RF_VALIDATION_JSON = RESULTS / "rf_validation.json"
 SPATIAL_CV_BLOCK_M = 500          # mekânsal blok CV hücre boyutu
 HOLDOUT_NEIGHBORHOODS = ["ALTINKUM", "HURMA", "GÜRSU"]   # 3 mahalle hold-out
 DTC_SATURATED_THRESHOLD = 19999   # bu değerin üstü saturated sayılır
+
+# --- Hafta 11: Yıllar arası CV ---
+LST_YEARLY_RASTERS = {
+    y: DATA_PROCESSED / f"lst_summer_{y}.tif" for y in LST_YEARS
+}
+GRID_30M_YEARLY = DATA_PROCESSED / "grid_30m_yearly_lst.gpkg"
+CROSS_YEAR_VALIDATION_JSON = RESULTS / "cross_year_validation.json"
+PERSISTENCE_GPKG = DATA_PROCESSED / "grid_30m_persistence.gpkg"

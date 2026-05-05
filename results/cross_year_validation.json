@@ -1,0 +1,92 @@
+{
+  "yearly_metrics": [
+    {
+      "yil": 2020,
+      "n_cells": 28247,
+      "actual_mean": 40.78,
+      "actual_std": 3.01,
+      "RMSE": 2.116,
+      "MAE": 1.818,
+      "R2": 0.505
+    },
+    {
+      "yil": 2021,
+      "n_cells": 28247,
+      "actual_mean": 41.73,
+      "actual_std": 3.3,
+      "RMSE": 1.238,
+      "MAE": 1.052,
+      "R2": 0.859
+    },
+    {
+      "yil": 2022,
+      "n_cells": 28247,
+      "actual_mean": 44.69,
+      "actual_std": 4.04,
+      "RMSE": 2.886,
+      "MAE": 2.282,
+      "R2": 0.491
+    },
+    {
+      "yil": 2023,
+      "n_cells": 28247,
+      "actual_mean": 42.6,
+      "actual_std": 3.15,
+      "RMSE": 0.598,
+      "MAE": 0.454,
+      "R2": 0.964
+    },
+    {
+      "yil": 2024,
+      "n_cells": 28247,
+      "actual_mean": 42.39,
+      "actual_std": 3.09,
+      "RMSE": 0.612,
+      "MAE": 0.481,
+      "R2": 0.961
+    }
+  ],
+  "yearly_correlation": {
+    "lst_2020_mean": {
+      "lst_2020_mean": 1.0,
+      "lst_2021_mean": 0.884,
+      "lst_2022_mean": 0.797,
+      "lst_2023_mean": 0.927,
+      "lst_2024_mean": 0.927
+    },
+    "lst_2021_mean": {
+      "lst_2020_mean": 0.884,
+      "lst_2021_mean": 1.0,
+      "lst_2022_mean": 0.888,
+      "lst_2023_mean": 0.955,
+      "lst_2024_mean": 0.955
+    },
+    "lst_2022_mean": {
+      "lst_2020_mean": 0.797,
+      "lst_2021_mean": 0.888,
+      "lst_2022_mean": 1.0,
+      "lst_2023_mean": 0.868,
+      "lst_2024_mean": 0.869
+    },
+    "lst_2023_mean": {
+      "lst_2020_mean": 0.927,
+      "lst_2021_mean": 0.955,
+      "lst_2022_mean": 0.868,
+      "lst_2023_mean": 1.0,
+      "lst_2024_mean": 0.983
+    },
+    "lst_2024_mean": {
+      "lst_2020_mean": 0.927,
+      "lst_2021_mean": 0.955,
+      "lst_2022_mean": 0.869,
+      "lst_2023_mean": 0.983,
+      "lst_2024_mean": 1.0
+    }
+  },
+  "off_diagonal_corr_mean": 0.9052999999999999,
+  "off_diagonal_corr_min": 0.797,
+  "off_diagonal_corr_max": 0.983,
+  "persistent_hot_count": 2008,
+  "persistent_cold_count": 3390,
+  "yearly_std_median": 1.496883216027137
+}
