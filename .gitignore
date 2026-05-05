@@ -33,6 +33,9 @@ figures/*.pdf
 # Streamlit
 streamlit_app/.streamlit/secrets.toml
 
+# osmnx cache
+cache/
+
 # IDE
 .vscode/
 .idea/

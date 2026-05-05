@@ -91,3 +91,8 @@ BUILDINGS_IMPUTED = DATA_PROCESSED / "buildings_pilot_imputed.gpkg"
 GHSL_BUILT_H_RASTER = DATA_PROCESSED / "ghsl_built_h_2018.tif"
 GHSL_YEAR = 2018
 GRID_30M_BUILDING = DATA_PROCESSED / "grid_30m_building.gpkg"
+
+# --- Hafta 6: DTC_breeze + yol yoğunluğu ---
+COASTLINE_GPKG = DATA_PROCESSED / "osm_coastline.gpkg"
+ROADS_GPKG = DATA_PROCESSED / "osm_roads.gpkg"
+GRID_30M_FULL = DATA_PROCESSED / "grid_30m_full.gpkg"  # 7 değişkenin tümü
