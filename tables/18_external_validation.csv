@@ -1,0 +1,11 @@
+﻿test,value
+MODIS Pearson r,0.081
+MODIS RMSE (°C),24.4
+MODIS MAE (°C),16.7
+"MODIS bias (L-M, °C)",16.46
+Out-of-time R²,0.917
+Out-of-time RMSE (°C),0.891
+OOT gap (in-sample - OOT),-0.045
+Residual Moran I,0.6552
+Residual Moran p,0.0
+Top SHAP interaction,ndvi_mean × dw_built_pct = 0.4644

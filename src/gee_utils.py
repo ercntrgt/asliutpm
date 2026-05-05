@@ -451,6 +451,45 @@ def ghsl_built_height(region, year: int = 2018):
     return img.clip(region)
 
 
+def modis_lst_summer_median(
+    region,
+    years: Iterable[int] = (2020, 2021, 2022, 2023, 2024),
+    months: Iterable[int] = (6, 7, 8),
+):
+    """MODIS MOD11A2 yaz medyan LST (Celsius).
+
+    Scale factor: ``LST_Celsius = LST_Day_1km * 0.02 - 273.15``.
+    Native 1 km, 8-day composite. Quality flag QC_Day filtreli.
+
+    Returns
+    -------
+    ee.Image (single band 'LST_modis')
+    """
+    import ee
+
+    years = list(years)
+    months = list(months)
+    start = f"{min(years)}-01-01"
+    end = f"{max(years)}-12-31"
+
+    coll = (
+        ee.ImageCollection("MODIS/061/MOD11A2")
+        .filterBounds(region)
+        .filterDate(start, end)
+        .filter(ee.Filter.calendarRange(min(months), max(months), "month"))
+        .select(["LST_Day_1km", "QC_Day"])
+    )
+
+    def _scale(img):
+        # QC bits 0-1: 0 = good quality
+        qc = img.select("QC_Day")
+        good = qc.bitwiseAnd(0b11).eq(0)
+        lst_c = img.select("LST_Day_1km").multiply(0.02).subtract(273.15)
+        return lst_c.updateMask(good).rename("LST_modis")
+
+    return coll.map(_scale).median().clip(region)
+
+
 def dynamic_world_built_probability(
     region,
     years: Iterable[int] = (2020, 2021, 2022, 2023, 2024),

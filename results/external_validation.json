@@ -1,0 +1,59 @@
+{
+  "modis_validation": {
+    "n_cells": 34,
+    "landsat_median_C": 43.45788014750001,
+    "modis_median_C": 38.055000000000035,
+    "pearson_r": 0.08147952823641451,
+    "rmse_C": 24.398631533923474,
+    "mae_C": 16.69639897382353,
+    "bias_landsat_minus_modis_C": 16.45619312264706
+  },
+  "out_of_time": {
+    "train_years": [
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "test_year": 2024,
+    "n_cells": 28247,
+    "r2": 0.9166281351987388,
+    "rmse_C": 0.8909180224311017,
+    "mae_C": 0.7129515248655803,
+    "in_sample_r2": 0.872,
+    "out_of_time_gap": -0.04462813519873876
+  },
+  "shap_interactions_top5": [
+    {
+      "a": "ndvi_mean",
+      "b": "dw_built_pct",
+      "strength": 0.46439211225771126
+    },
+    {
+      "a": "albedo_mean",
+      "b": "dw_built_pct",
+      "strength": 0.38225969694599604
+    },
+    {
+      "a": "ndvi_mean",
+      "b": "albedo_mean",
+      "strength": 0.30025496678373054
+    },
+    {
+      "a": "ndvi_mean",
+      "b": "dtc_breeze_m",
+      "strength": 0.26293782180335146
+    },
+    {
+      "a": "dw_built_pct",
+      "b": "dtc_breeze_m",
+      "strength": 0.19225702988691204
+    }
+  ],
+  "residual_spatial_autocorr": {
+    "moran_I": 0.6551855715658036,
+    "z_score": 221.42898270459114,
+    "p_value": 0.0,
+    "interpretation": "residuals_clustered_model_misspecified"
+  }
+}

@@ -141,6 +141,7 @@ DTC_SATURATED_THRESHOLD = 19999   # bu değerin üstü saturated sayılır
 LST_YEARLY_RASTERS = {
     y: DATA_PROCESSED / f"lst_summer_{y}.tif" for y in LST_YEARS
 }
+MODIS_LST_RASTER = DATA_PROCESSED / "modis_lst_summer_median_2020_2024.tif"
 GRID_30M_YEARLY = DATA_PROCESSED / "grid_30m_yearly_lst.gpkg"
 CROSS_YEAR_VALIDATION_JSON = RESULTS / "cross_year_validation.json"
 PERSISTENCE_GPKG = DATA_PROCESSED / "grid_30m_persistence.gpkg"
