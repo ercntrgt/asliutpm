@@ -85,3 +85,9 @@ IMPERVIOUS_RASTER = DATA_PROCESSED / "impervious_esa_worldcover_2021.tif"
 
 # --- Birleştirilmiş 30m grid (LST + NDVI + Albedo + Impervious) ---
 GRID_30M_VARIABLES = DATA_PROCESSED / "grid_30m_variables.gpkg"
+
+# --- Hafta 5: Bina yüksekliği + GHSL doğrulama ---
+BUILDINGS_IMPUTED = DATA_PROCESSED / "buildings_pilot_imputed.gpkg"
+GHSL_BUILT_H_RASTER = DATA_PROCESSED / "ghsl_built_h_2018.tif"
+GHSL_YEAR = 2018
+GRID_30M_BUILDING = DATA_PROCESSED / "grid_30m_building.gpkg"

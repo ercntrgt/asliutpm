@@ -1,0 +1,16 @@
+﻿metrik,deger
+toplam_bina,18575.0
+measured,12788.0
+imputed,5787.0
+cv_rmse_m,0.81
+cv_mae_m,0.2
+cv_r2,0.957
+grid_30m_hucre,28247.0
+binali_hucre,5336.0
+binali_hucre_pct,18.9
+medyan_yapi_yogunlugu_per_km2,0.0
+medyan_yukseklik_imar,12.0
+medyan_yukseklik_ghsl,11.08
+imar_vs_ghsl_pearson_r,-0.015
+imar_vs_ghsl_rmse_m,5.09
+ghsl_karsilastirma_n,642.0

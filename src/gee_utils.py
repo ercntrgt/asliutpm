@@ -280,6 +280,26 @@ def s2_summer_median(
 # ESA WorldCover (Geçirimsiz yüzey oranı)
 # =============================================================================
 
+def ghsl_built_height(region, year: int = 2018):
+    """GHSL JRC global built-up height image (100 m).
+
+    Parameters
+    ----------
+    region : ee.Geometry
+    year : int
+        Default 2018 (P2023A release; tek yıl mevcut).
+
+    Returns
+    -------
+    ee.Image
+        Tek-bant ``BUILT_H`` (metre cinsinden bina yüksekliği). 0 = bina yok.
+        Native 100 m. Zonal mean alınınca hücre içi ortalama yükseklik verir.
+    """
+    import ee
+    img = ee.Image(f"JRC/GHSL/P2023A/GHS_BUILT_H/{year}").rename("BUILT_H")
+    return img.clip(region)
+
+
 def esa_worldcover_impervious(region, version: str = "v200"):
     """ESA WorldCover'dan geçirimsiz yüzey (built-up = sınıf 50) binary maskesi.
 
