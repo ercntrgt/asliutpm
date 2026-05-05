@@ -1,8 +1,8 @@
-﻿degisken,raw_skew,log_uygulandi,z_kaynak,r_with_LST_raw,r_with_LST_z,r_with_LST_spearman
-ndvi_mean,0.672,False,ndvi_mean,0.05,0.05,-0.251
-albedo_mean,0.729,False,albedo_mean,0.592,0.592,0.413
-impervious_pct,0.04,False,impervious_pct,0.338,0.338,0.278
-building_height_mean,0.415,False,building_height_mean,-0.133,-0.133,-0.152
-building_density_per_km2,22.644,True,building_density_per_km2_log,0.05,0.103,0.051
-road_density_m_per_km2,1.362,True,road_density_m_per_km2_log,0.17,0.198,0.125
-dtc_breeze_m,4.135,True,dtc_breeze_m_log,-0.654,-0.174,0.018
+﻿degisken,raw_skew,log_uygulandi,z_kaynak,z_mean,z_std,r_with_LST_raw,r_with_LST_z,r_with_LST_spearman
+ndvi_mean,0.672,False,ndvi_mean,0.271,0.223,0.05,0.05,-0.251
+albedo_mean,0.729,False,albedo_mean,0.209,0.071,0.592,0.592,0.413
+impervious_pct,0.04,False,impervious_pct,47.8,42.233,0.338,0.338,0.278
+building_height_mean,0.415,False,building_height_mean,10.221,3.211,-0.133,-0.133,-0.152
+building_density_per_km2,22.644,True,building_density_per_km2_log,1.5,3.125,0.05,0.103,0.051
+road_density_m_per_km2,1.362,True,road_density_m_per_km2_log,4.104,5.241,0.17,0.198,0.125
+dtc_breeze_m,4.135,True,dtc_breeze_m_log,7.285,1.094,-0.654,-0.174,0.018

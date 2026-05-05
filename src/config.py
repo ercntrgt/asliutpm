@@ -121,3 +121,11 @@ GRID_30M_MODELING = DATA_PROCESSED / "grid_30m_modeling.gpkg"
 # 7 değişkenin tümü modelde tutulacak. Random Forest Hafta 10'da feature
 # importance ile zayıf prediktörleri yorumlayacak.
 SELECTED_FEATURES = list(FEATURE_COLUMNS)  # tüm 7
+
+# --- Hafta 10: Random Forest + validation ---
+PREDICTIONS_GPKG = DATA_PROCESSED / "grid_30m_predictions.gpkg"
+MODEL_PKL = RESULTS / "rf_model.pkl"
+RF_VALIDATION_JSON = RESULTS / "rf_validation.json"
+SPATIAL_CV_BLOCK_M = 500          # mekânsal blok CV hücre boyutu
+HOLDOUT_NEIGHBORHOODS = ["ALTINKUM", "HURMA", "GÜRSU"]   # 3 mahalle hold-out
+DTC_SATURATED_THRESHOLD = 19999   # bu değerin üstü saturated sayılır

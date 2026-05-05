@@ -1,0 +1,105 @@
+{
+  "random_cv": {
+    "mean": {
+      "rmse": 1.221,
+      "mae": 0.922,
+      "r2": 0.846
+    },
+    "std": {
+      "rmse": 0.018,
+      "mae": 0.011,
+      "r2": 0.01
+    }
+  },
+  "spatial_cv": {
+    "mean": {
+      "rmse": 1.418,
+      "mae": 1.081,
+      "r2": 0.72
+    },
+    "std": {
+      "rmse": 0.082,
+      "mae": 0.075,
+      "r2": 0.162
+    },
+    "n_blocks": 160,
+    "block_size_m": 500
+  },
+  "holdout": {
+    "metrics": {
+      "rmse": 1.436359995126913,
+      "mae": 1.1289053768845265,
+      "r2": 0.10480084475079754
+    },
+    "n_train": 22608,
+    "n_test": 5639,
+    "test_neighborhoods": [
+      "ALTINKUM",
+      "HURMA",
+      "GÜRSU"
+    ]
+  },
+  "permutation_null": {
+    "n_permutations": 50,
+    "null_r2_mean": -0.06974000892619978,
+    "null_r2_std": 0.004058182466928435,
+    "null_r2_99p": -0.060964724612390844,
+    "null_r2_max": -0.060547278049727225
+  },
+  "saturated_rmse": 0.1919890814856027,
+  "nonsat_rmse": 0.4537655205049923,
+  "feature_importance": [
+    {
+      "feature": "ndvi_mean",
+      "gini_importance": 0.1486111483845256,
+      "permutation_importance_mean": 0.4186789471662376,
+      "permutation_importance_std": 0.002454008589239797
+    },
+    {
+      "feature": "albedo_mean",
+      "gini_importance": 0.6708555136134172,
+      "permutation_importance_mean": 0.33621994492676066,
+      "permutation_importance_std": 0.003105131470919525
+    },
+    {
+      "feature": "dtc_breeze_m",
+      "gini_importance": 0.12536243118637977,
+      "permutation_importance_mean": 0.27786370071080146,
+      "permutation_importance_std": 0.0018343208213334801
+    },
+    {
+      "feature": "impervious_pct",
+      "gini_importance": 0.024273586907514855,
+      "permutation_importance_mean": 0.13139585591573122,
+      "permutation_importance_std": 0.0017620392223033031
+    },
+    {
+      "feature": "is_dtc_saturated",
+      "gini_importance": 0.0075559155988551945,
+      "permutation_importance_mean": 0.043709001815176195,
+      "permutation_importance_std": 0.0009321111107267858
+    },
+    {
+      "feature": "road_density_m_per_km2",
+      "gini_importance": 0.014844762470441754,
+      "permutation_importance_mean": 0.03603778001619061,
+      "permutation_importance_std": 0.000348259109758657
+    },
+    {
+      "feature": "building_height_mean",
+      "gini_importance": 0.00502559717882502,
+      "permutation_importance_mean": 0.01957314580340779,
+      "permutation_importance_std": 0.00027570787776383946
+    },
+    {
+      "feature": "building_density_per_km2",
+      "gini_importance": 0.0034710446600406627,
+      "permutation_importance_mean": 0.006151007784991336,
+      "permutation_importance_std": 0.00014756588622446098
+    }
+  ],
+  "n_features": 8,
+  "n_samples": 28247,
+  "rf_n_estimators": 500,
+  "random_state": 42
+}

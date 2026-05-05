@@ -1,0 +1,5 @@
+﻿katman,RMSE,MAE,R2
+Random 5-fold CV,1.221,0.922,0.846
+Spatial Block CV (500m),1.418,1.081,0.72
+"Hold-out ['ALTINKUM', 'HURMA', 'GÜRSU']",1.436,1.129,0.105
+Permutation Null R² 99p,,,-0.061
