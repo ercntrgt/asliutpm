@@ -22,6 +22,7 @@ import rasterio
 from rasterio import Affine
 from rasterio.features import rasterize
 from rasterio.warp import calculate_default_transform, reproject, Resampling
+from scipy.ndimage import distance_transform_edt
 
 from src.config import (
     DATA_GRID, DATA_PROCESSED,
@@ -120,6 +121,40 @@ arr_utm = rasterize(
     dtype=np.uint8,
 )
 print(f"  rasterize: unique values = {np.unique(arr_utm)}")
+
+# --- Sınır içi boş pikselleri (park/yol/dere) komşu UTPM ile doldur ---
+# Boundary'nin DELİKSİZ DIŞ KABUĞUNU mask olarak kullan — orijinal sınır
+# imar parsellerinden türetilmiş ve parklar/yollar deliği oluşturmuş; biz bu
+# delikleri görsel için doldurmak istiyoruz.
+from shapely.geometry import Polygon, MultiPolygon
+boundary_utm = boundary.to_crs("EPSG:32636")
+def _outer_only(geom):
+    if isinstance(geom, Polygon):
+        return Polygon(geom.exterior)
+    if isinstance(geom, MultiPolygon):
+        return MultiPolygon([Polygon(p.exterior) for p in geom.geoms])
+    return geom
+outer_geoms = [_outer_only(g) for g in boundary_utm.geometry]
+mask_utm = rasterize(
+    [(g, 1) for g in outer_geoms],
+    out_shape=(height, width),
+    transform=transform_utm,
+    fill=0,
+    dtype=np.uint8,
+)
+
+valid = arr_utm != 255
+empty_inside = (arr_utm == 255) & (mask_utm == 1)
+n_empty = int(empty_inside.sum())
+n_total_inside = int(mask_utm.sum())
+if n_empty > 0 and valid.any():
+    _, (yi, xi) = distance_transform_edt(~valid, return_indices=True)
+    arr_utm = arr_utm.copy()
+    arr_utm[empty_inside] = arr_utm[yi[empty_inside], xi[empty_inside]]
+    print(f"  fill: {n_empty:,} / {n_total_inside:,} sınır içi delik "
+          f"({n_empty/n_total_inside*100:.1f}%) komşu UTPM ile dolduruldu")
+else:
+    print(f"  fill: doldurulacak boş piksel yok")
 
 # Reproject UTM → 4326 (Folium için)
 src_crs = "EPSG:32636"
