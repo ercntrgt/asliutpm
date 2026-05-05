@@ -87,11 +87,23 @@ merged.to_file(out_gpkg, driver="GPKG")
 print(f"  saved: {out_gpkg.name} ({out_gpkg.stat().st_size/1024/1024:.2f} MB)")
 print(f"  cells: {len(merged):,}, cols: {len(merged.columns)}")
 
-# Boundary
+# Boundary — Streamlit overlay için DELİKSİZ dış kabuğu kaydet
+# (iç delik etrafına teal çizgi çizilmesin, doldurduğumuz parklar düzgün görünsün)
+from shapely.geometry import Polygon, MultiPolygon
 boundary = gpd.read_file(DATA_GRID / "pilot_boundary.gpkg")
+
+def _outer_only(geom):
+    if isinstance(geom, Polygon):
+        return Polygon(geom.exterior)
+    if isinstance(geom, MultiPolygon):
+        return MultiPolygon([Polygon(p.exterior) for p in geom.geoms])
+    return geom
+
+boundary_outer = boundary.copy()
+boundary_outer["geometry"] = boundary_outer.geometry.apply(_outer_only)
 out_bnd = OUT_DIR / "pilot_boundary.gpkg"
-boundary.to_file(out_bnd, driver="GPKG")
-print(f"  saved: {out_bnd.name} ({out_bnd.stat().st_size/1024:.1f} KB)")
+boundary_outer.to_file(out_bnd, driver="GPKG")
+print(f"  saved: {out_bnd.name} ({out_bnd.stat().st_size/1024:.1f} KB) — deliksiz dış kabuk")
 
 # ============================================================
 # 2. PNG Choropleth Raster (30m UTM → 4326 reproject)
@@ -123,17 +135,8 @@ arr_utm = rasterize(
 print(f"  rasterize: unique values = {np.unique(arr_utm)}")
 
 # --- Sınır içi boş pikselleri (park/yol/dere) komşu UTPM ile doldur ---
-# Boundary'nin DELİKSİZ DIŞ KABUĞUNU mask olarak kullan — orijinal sınır
-# imar parsellerinden türetilmiş ve parklar/yollar deliği oluşturmuş; biz bu
-# delikleri görsel için doldurmak istiyoruz.
-from shapely.geometry import Polygon, MultiPolygon
+# Boundary'nin DELİKSİZ dış kabuğunu mask olarak kullan (yukarıda tanımlandı).
 boundary_utm = boundary.to_crs("EPSG:32636")
-def _outer_only(geom):
-    if isinstance(geom, Polygon):
-        return Polygon(geom.exterior)
-    if isinstance(geom, MultiPolygon):
-        return MultiPolygon([Polygon(p.exterior) for p in geom.geoms])
-    return geom
 outer_geoms = [_outer_only(g) for g in boundary_utm.geometry]
 mask_utm = rasterize(
     [(g, 1) for g in outer_geoms],
