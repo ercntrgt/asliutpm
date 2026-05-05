@@ -96,3 +96,19 @@ GRID_30M_BUILDING = DATA_PROCESSED / "grid_30m_building.gpkg"
 COASTLINE_GPKG = DATA_PROCESSED / "osm_coastline.gpkg"
 ROADS_GPKG = DATA_PROCESSED / "osm_roads.gpkg"
 GRID_30M_FULL = DATA_PROCESSED / "grid_30m_full.gpkg"  # 7 değişkenin tümü
+
+# --- Hafta 8: Standardizasyon ---
+GRID_30M_STANDARDIZED = DATA_PROCESSED / "grid_30m_standardized.gpkg"
+SKEW_THRESHOLD_LOG = 1.0   # |skew| > bu değer ⇒ log1p uygula
+
+# 7 bağımsız değişken — modelleme için kanonik liste
+FEATURE_COLUMNS = [
+    "ndvi_mean",
+    "albedo_mean",
+    "impervious_pct",
+    "building_height_mean",
+    "building_density_per_km2",
+    "road_density_m_per_km2",
+    "dtc_breeze_m",
+]
+TARGET_COLUMN = "lst_mean"
