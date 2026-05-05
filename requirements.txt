@@ -1,14 +1,9 @@
-# Streamlit Cloud için pip install gereksinimleri
-# packages.txt sistem kütüphaneleri yükler (GDAL, GEOS, PROJ)
-
-streamlit>=1.30
-streamlit-folium>=0.18
-folium>=0.16
-geopandas>=0.14
-pandas>=2.0
-numpy>=1.24
-shapely>=2.0
-pyproj>=3.6
-fiona>=1.9
-pillow>=10.0
-anthropic>=0.40
+# Minimal requirements — geopandas dependency'leri (fiona, pyproj, shapely) otomatik gelir
+streamlit
+streamlit-folium
+folium
+geopandas
+pandas
+numpy
+pillow
+anthropic
