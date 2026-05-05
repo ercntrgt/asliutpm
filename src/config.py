@@ -112,3 +112,12 @@ FEATURE_COLUMNS = [
     "dtc_breeze_m",
 ]
 TARGET_COLUMN = "lst_mean"
+
+# --- Hafta 9: Feature seçimi ---
+VIF_THRESHOLD = 10.0
+GRID_30M_MODELING = DATA_PROCESSED / "grid_30m_modeling.gpkg"
+
+# Notebook 07 sonrası karar: VIF analizi multicollinearity göstermediği için
+# 7 değişkenin tümü modelde tutulacak. Random Forest Hafta 10'da feature
+# importance ile zayıf prediktörleri yorumlayacak.
+SELECTED_FEATURES = list(FEATURE_COLUMNS)  # tüm 7
