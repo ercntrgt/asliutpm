@@ -1,0 +1,14 @@
+# Streamlit Cloud deploy gereksinimleri (lokal pip install için de kullanılabilir).
+# Lokal conda env için ayrı: environment.yml
+
+streamlit>=1.28
+streamlit-folium>=0.15
+folium>=0.14
+geopandas>=0.14
+pandas>=2.0
+numpy>=1.24
+shapely>=2.0
+pyproj>=3.6
+fiona>=1.9
+pillow>=10.0
+anthropic>=0.34

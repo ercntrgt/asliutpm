@@ -33,6 +33,13 @@ results/*.npz
 
 # Streamlit
 streamlit_app/.streamlit/secrets.toml
+# AMA streamlit_app/data altındaki deploy varlıkları commit'e dahil
+!streamlit_app/data/
+!streamlit_app/data/*.gpkg
+!streamlit_app/data/*.png
+!streamlit_app/data/*.json
+!streamlit_app/.streamlit/config.toml
+!streamlit_app/.streamlit/secrets.toml.example
 
 # osmnx cache
 cache/
