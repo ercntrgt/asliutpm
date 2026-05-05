@@ -194,8 +194,16 @@ with col_info:
             st.warning(f"Pilot alan dışı: ({lat:.5f}, {lon:.5f})")
         else:
             cid = str(cell_row["cell_id"])
-            summary = cell_summary(cid, data)
-            comparison = neighborhood_comparison(cid, data, radius_m=radius_m)
+            try:
+                summary = cell_summary(cid, data)
+            except Exception as e:
+                st.error(f"Hücre özeti alınamadı: {type(e).__name__}: {e}")
+                summary = {}
+            try:
+                comparison = neighborhood_comparison(cid, data, radius_m=radius_m)
+            except Exception as e:
+                st.warning(f"Komşuluk karşılaştırması atlandı: {type(e).__name__}")
+                comparison = {}
 
             # Üst metrikler
             mc1, mc2, mc3 = st.columns(3)
@@ -212,7 +220,8 @@ with col_info:
             lisa = summary.get("lisa_cluster", "NS")
             lisa_emoji = {"HH": "🔴", "LL": "🔵", "HL": "🟠",
                            "LH": "🟦", "NS": "⚪"}.get(lisa, "")
-            st.markdown(f"**LISA:** {lisa_emoji} `{lisa}` — _{summary['lisa_description']}_")
+            lisa_desc = summary.get("lisa_description", "")
+            st.markdown(f"**LISA:** {lisa_emoji} `{lisa}` — _{lisa_desc}_")
 
             # Priority
             if "priority" in summary:
@@ -260,17 +269,26 @@ with col_info:
                     if feat_rows:
                         st.table(feat_rows)
 
-            # AI yorumu
+            # AI yorumu — her durumda görünsün (key varsa Claude, yoksa fallback template)
             st.markdown("---")
             st.markdown("### 🤖 AI Yorumu")
+            text, source = "", "fallback"
             with st.spinner("Yorum oluşturuluyor..."):
-                text, source = explain_with_claude(
-                    summary, comparison,
-                    api_key=api_key if api_key else None,
-                )
+                try:
+                    text, source = explain_with_claude(
+                        summary, comparison,
+                        api_key=api_key if api_key else None,
+                    )
+                except Exception as e:
+                    text = f"_(Yorum oluşturulamadı: {type(e).__name__}: {e})_"
+                    source = "error"
             st.write(text)
-            st.caption("✓ Claude API" if source == "claude" else
-                        "⚠ Kural-tabanlı (Claude API key girin daha akıllı için)")
+            if source == "claude":
+                st.caption("✓ Claude API ile gelişmiş yorum")
+            elif source == "fallback":
+                st.caption("ℹ Kural-tabanlı yorum — daha akıllı yorum için yan panele Anthropic API key girin")
+            else:
+                st.caption("⚠ Yorum motoru hata verdi")
 
 
 # ============================================================================

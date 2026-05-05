@@ -24,50 +24,65 @@ Klişe ifadelerden kaçın. Sayıları kullan. Doğrudan gerçeği aktar."""
 
 
 def build_user_prompt(summary: dict, comparison: dict) -> str:
-    """Hücre verisinden Claude'a gönderilecek user mesajını üretir."""
-    feats = summary.get("features", {})
-    pers = summary.get("persistence", {})
+    """Hücre verisinden Claude'a gönderilecek user mesajını üretir. Defensive — eksik keylerde crash etmez."""
+    feats = summary.get("features", {}) or {}
+    pers = summary.get("persistence", {}) or {}
 
     lines = [
-        f"30 m grid hücresi: `{summary['cell_id']}`",
+        f"30 m grid hücresi: `{summary.get('cell_id', '?')}`",
     ]
-    if "mahalle" in summary:
+    if "mahalle" in summary and summary.get("mahalle"):
         lines.append(f"Mahalle: {summary['mahalle']}")
-    lines += [
-        "",
-        f"## Termal durum",
-        f"- LST (5-yıl medyan): **{summary.get('lst_mean', 'N/A'):.2f} °C**" if summary.get('lst_mean') else "",
-        f"- UTPM skoru (0-100): **{summary['utpm_score']:.1f}**",
-        f"- UTPM sınıfı: **{summary['utpm_class_label']}** (Jenks {summary['utpm_class']+1}/5)",
-        f"- LISA cluster: **{summary['lisa_cluster']}** — {summary['lisa_description']}",
-        f"- Local Moran I: {summary['local_I']:.3f} (p={summary['lisa_p']:.3f})",
-        "",
-        "## Fiziksel özellikler",
-    ]
+
+    lst_mean = summary.get("lst_mean")
+    utpm_score = summary.get("utpm_score")
+    utpm_class = summary.get("utpm_class", -1)
+    utpm_label = summary.get("utpm_class_label", "?")
+    lisa_cluster = summary.get("lisa_cluster", "NS")
+    lisa_desc = summary.get("lisa_description", "")
+    local_I = summary.get("local_I")
+    lisa_p = summary.get("lisa_p")
+
+    lines += ["", "## Termal durum"]
+    if lst_mean is not None:
+        lines.append(f"- LST (5-yıl medyan): **{lst_mean:.2f} °C**")
+    if utpm_score is not None:
+        lines.append(f"- UTPM skoru (0-100): **{utpm_score:.1f}**")
+    if utpm_class is not None and utpm_class >= 0:
+        lines.append(f"- UTPM sınıfı: **{utpm_label}** (Jenks {int(utpm_class) + 1}/5)")
+    lines.append(f"- LISA cluster: **{lisa_cluster}** — {lisa_desc}")
+    if local_I is not None and lisa_p is not None:
+        lines.append(f"- Local Moran I: {local_I:.3f} (p={lisa_p:.3f})")
+    lines.append("")
+    lines.append("## Fiziksel özellikler")
     if feats:
         for k, v in feats.items():
             if v is not None:
                 lines.append(f"- {k}: {v:.3f}")
 
     if pers:
-        lines += [
-            "",
-            "## 5-yıl persistence",
-            f"- Yıllık ortalama LST: {pers.get('yearly_mean_lst', 'N/A'):.2f} °C" if pers.get('yearly_mean_lst') else "",
-            f"- Yıllar arası std: {pers.get('yearly_std_lst', 'N/A'):.2f} °C" if pers.get('yearly_std_lst') else "",
-            f"- 5 yılda en sıcak quartile'da olduğu yıl sayısı: **{pers['years_in_top_quartile']}/5**",
-            f"- 5 yılda en serin quartile'da olduğu yıl sayısı: {pers['years_in_bottom_quartile']}/5",
-        ]
+        lines += ["", "## 5-yıl persistence"]
+        ym = pers.get("yearly_mean_lst")
+        ys = pers.get("yearly_std_lst")
+        if ym is not None:
+            lines.append(f"- Yıllık ortalama LST: {ym:.2f} °C")
+        if ys is not None:
+            lines.append(f"- Yıllar arası std: {ys:.2f} °C")
+        lines.append(f"- 5 yılda en sıcak quartile'da olduğu yıl sayısı: **{pers.get('years_in_top_quartile', 0)}/5**")
+        lines.append(f"- 5 yılda en serin quartile'da olduğu yıl sayısı: {pers.get('years_in_bottom_quartile', 0)}/5")
 
-    if "priority" in summary:
+    if summary.get("priority"):
         pr = summary["priority"]
-        nice = pr["label"].split("_", 1)[1].replace("_", " ").title()
-        lines += [
-            "",
-            "## Karar Önceliği",
-            f"- Sınıf: **{nice}** (UTPM tier {pr['utpm_tier']}/2, Blockage tier {pr['block_tier']}/2)",
-            f"- Wind blockage index: {pr['wind_blockage_index']:.3f}" if pr['wind_blockage_index'] else "",
-        ]
+        label = pr.get("label", "?")
+        nice = label.split("_", 1)[-1].replace("_", " ").title() if "_" in label else label
+        lines += ["", "## Karar Önceliği"]
+        if pr.get("utpm_tier") is not None and pr.get("block_tier") is not None:
+            lines.append(f"- Sınıf: **{nice}** (UTPM tier {pr['utpm_tier']}/2, Blockage tier {pr['block_tier']}/2)")
+        else:
+            lines.append(f"- Sınıf: **{nice}**")
+        wbi = pr.get("wind_blockage_index")
+        if wbi is not None:
+            lines.append(f"- Wind blockage index: {wbi:.3f}")
 
     if comparison:
         lines += [
@@ -133,16 +148,17 @@ def explain_with_claude(
 
 
 def _fallback_template(summary: dict, comparison: dict) -> str:
-    """API key yoksa veya hata olursa template-based yorum."""
+    """API key yoksa veya hata olursa template-based yorum. Defensive — eksik keylerde de çalışır."""
     lines = []
 
-    score = summary["utpm_score"]
-    cls = summary["utpm_class_label"]
+    score = summary.get("utpm_score")
+    cls = summary.get("utpm_class_label", "?")
     lst = summary.get("lst_mean")
-    cluster = summary["lisa_cluster"]
+    cluster = summary.get("lisa_cluster", "NS")
 
-    # 1. Termal durum
-    if score >= 60:
+    if score is None:
+        lines.append(f"Bu hücre için UTPM skoru bulunamadı (sınıf: **{cls}**). Veri kalitesi sınırlı olabilir.")
+    elif score >= 60:
         lines.append(f"Bu hücre **{cls}** sınıfında (UTPM {score:.1f}/100) — kentsel ısı adası riski yüksek.")
     elif score >= 44:
         lines.append(f"Hücre **{cls}** sınıfında (UTPM {score:.1f}). Termal stres orta-yüksek.")
@@ -182,7 +198,7 @@ def _fallback_template(summary: dict, comparison: dict) -> str:
 
     # 4. LISA
     if cluster in ("HH", "LL", "HL", "LH"):
-        lines.append(f"LISA: {cluster} — {summary['lisa_description']}")
+        lines.append(f"LISA: {cluster} — {summary.get('lisa_description', '')}")
 
     # 5. Komşu karşılaştırma
     if comparison:
@@ -192,12 +208,13 @@ def _fallback_template(summary: dict, comparison: dict) -> str:
         else:
             lines.append(f"Komşuluk ortalamasıyla uyumlu (fark {diff:+.1f}).")
 
-    # 6. Müdahale önerisi
-    if score >= 60 and feats.get("impervious_pct", 0) > 60:
-        lines.append("**Öneri:** soğuk çatı boyası + sokak ağacı + yeşil bant.")
-    elif score >= 44 and feats.get("ndvi_mean", 1) < 0.2:
-        lines.append("**Öneri:** boş arsa yeşillendirme + cadde ağaçlandırma.")
-    elif score < 22:
-        lines.append("**Öneri:** mevcut yeşil/kıyı dokusunu koruyucu planlama.")
+    # 6. Müdahale önerisi (score None ise atla)
+    if score is not None:
+        if score >= 60 and feats.get("impervious_pct", 0) > 60:
+            lines.append("**Öneri:** soğuk çatı boyası + sokak ağacı + yeşil bant.")
+        elif score >= 44 and feats.get("ndvi_mean", 1) < 0.2:
+            lines.append("**Öneri:** boş arsa yeşillendirme + cadde ağaçlandırma.")
+        elif score < 22:
+            lines.append("**Öneri:** mevcut yeşil/kıyı dokusunu koruyucu planlama.")
 
-    return " ".join(lines)
+    return " ".join(lines) if lines else "Bu hücre için yorum oluşturulamadı (veri eksik)."

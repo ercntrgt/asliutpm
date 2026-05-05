@@ -93,27 +93,51 @@ def find_cell_by_coords(
     return hits.iloc[0]
 
 
+def _empty_summary(cell_id: str = "?") -> dict:
+    """Defensive default — tüm key'ler her zaman var olsun ki app.py crash etmesin."""
+    return {
+        "cell_id": cell_id,
+        "lst_mean": None,
+        "utpm_score": None,
+        "utpm_class": -1,
+        "utpm_class_label": "?",
+        "lisa_cluster": "NS",
+        "lisa_description": LISA_DESCRIPTIONS["NS"],
+        "local_I": 0.0,
+        "lisa_p": 1.0,
+        "features": {},
+    }
+
+
 def cell_summary(cell_id: str, data: dict) -> dict:
-    """Bir hücrenin tüm bilgi paketini döner (slim consolidated GPKG'den)."""
+    """Bir hücrenin tüm bilgi paketini döner (slim consolidated GPKG'den).
+
+    Defensive: eksik kolon/satır durumunda partial dict yerine tüm key'leri
+    olan bir dict döner — app.py'nin hardcoded key access'leri crash etmesin.
+    """
     grid = data["grid"]
     g = grid[grid["cell_id"] == cell_id]
     if g.empty:
-        return {}
+        return _empty_summary(cell_id)
     g = g.iloc[0]
 
-    summary = {
-        "cell_id": cell_id,
-        "lst_mean": float(g[TARGET_COLUMN]) if pd.notna(g.get(TARGET_COLUMN)) else None,
-        "utpm_score": float(g["utpm_score"]) if pd.notna(g.get("utpm_score")) else None,
-        "utpm_class": int(g["utpm_class"]) if pd.notna(g.get("utpm_class")) else -1,
-        "utpm_class_label": (
-            JENKS_LABELS[int(g["utpm_class"])]
-            if 0 <= int(g.get("utpm_class", -1)) < len(JENKS_LABELS)
-            else "?"
-        ),
-        "lisa_cluster": str(g.get("lisa_cluster", "NS")),
-        "lisa_description": LISA_DESCRIPTIONS.get(str(g.get("lisa_cluster", "NS")), ""),
-    }
+    summary = _empty_summary(cell_id)
+    if pd.notna(g.get(TARGET_COLUMN)):
+        summary["lst_mean"] = float(g[TARGET_COLUMN])
+    if pd.notna(g.get("utpm_score")):
+        summary["utpm_score"] = float(g["utpm_score"])
+    if pd.notna(g.get("utpm_class")):
+        cls = int(g["utpm_class"])
+        summary["utpm_class"] = cls
+        if 0 <= cls < len(JENKS_LABELS):
+            summary["utpm_class_label"] = JENKS_LABELS[cls]
+    cluster = str(g.get("lisa_cluster", "NS")) if pd.notna(g.get("lisa_cluster")) else "NS"
+    summary["lisa_cluster"] = cluster
+    summary["lisa_description"] = LISA_DESCRIPTIONS.get(cluster, LISA_DESCRIPTIONS["NS"])
+    if pd.notna(g.get("local_I")):
+        summary["local_I"] = float(g["local_I"])
+    if pd.notna(g.get("lisa_p")):
+        summary["lisa_p"] = float(g["lisa_p"])
 
     if "mahalle" in g.index and pd.notna(g["mahalle"]):
         summary["mahalle"] = str(g["mahalle"])
@@ -123,8 +147,7 @@ def cell_summary(cell_id: str, data: dict) -> dict:
     for col in SELECTED_FEATURES:
         if col in g.index and pd.notna(g[col]):
             feat_dict[col] = float(g[col])
-    if feat_dict:
-        summary["features"] = feat_dict
+    summary["features"] = feat_dict
 
     # Persistence
     if "lst_yearly_mean" in g.index:
@@ -166,24 +189,29 @@ def cell_summary(cell_id: str, data: dict) -> dict:
 def neighborhood_comparison(
     cell_id: str, data: dict, radius_m: float = 500,
 ) -> dict:
-    """Hücreyi yakın komşularla karşılaştırır."""
+    """Hücreyi yakın komşularla karşılaştırır. Defensive — utpm_score eksikse boş döner."""
     grid = data["grid"]
+    if "utpm_score" not in grid.columns:
+        return {}
     grid_proj = grid.to_crs(CRS_PROJECTED) if grid.crs != CRS_PROJECTED else grid
 
     target = grid_proj[grid_proj["cell_id"] == cell_id]
-    if target.empty:
+    if target.empty or pd.isna(target.iloc[0].get("utpm_score")):
         return {}
     pt = target.iloc[0].geometry.centroid
 
     distances = grid_proj.distance(pt)
     neighbors = grid_proj[distances <= radius_m]
+    valid = neighbors["utpm_score"].dropna()
+    if valid.empty:
+        return {}
 
     target_score = float(target.iloc[0]["utpm_score"])
-    neighbor_mean = float(neighbors["utpm_score"].mean())
-    neighbor_median = float(neighbors["utpm_score"].median())
+    neighbor_mean = float(valid.mean())
+    neighbor_median = float(valid.median())
 
     return {
-        "n_neighbors": int(len(neighbors)),
+        "n_neighbors": int(len(valid)),
         "radius_m": radius_m,
         "target_utpm": target_score,
         "neighbor_mean_utpm": neighbor_mean,
