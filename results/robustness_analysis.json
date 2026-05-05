@@ -1,0 +1,103 @@
+{
+  "baselines": [
+    {
+      "model": "LinearRegression",
+      "r2_mean": 0.6662,
+      "r2_std": 0.0099,
+      "r2_ci95_low": 0.6623,
+      "r2_ci95_high": 0.6699,
+      "rmse_mean": 1.801,
+      "rmse_ci95_low": 1.792,
+      "rmse_ci95_high": 1.809
+    },
+    {
+      "model": "Ridge_a1",
+      "r2_mean": 0.6661,
+      "r2_std": 0.0099,
+      "r2_ci95_low": 0.6623,
+      "r2_ci95_high": 0.6698,
+      "rmse_mean": 1.801,
+      "rmse_ci95_low": 1.792,
+      "rmse_ci95_high": 1.809
+    },
+    {
+      "model": "Lasso_a01",
+      "r2_mean": 0.5295,
+      "r2_std": 0.0109,
+      "r2_ci95_low": 0.5252,
+      "r2_ci95_high": 0.5336,
+      "rmse_mean": 2.138,
+      "rmse_ci95_low": 2.129,
+      "rmse_ci95_high": 2.145
+    },
+    {
+      "model": "GradientBoost",
+      "r2_mean": 0.8413,
+      "r2_std": 0.0059,
+      "r2_ci95_low": 0.8389,
+      "r2_ci95_high": 0.8435,
+      "rmse_mean": 1.241,
+      "rmse_ci95_low": 1.237,
+      "rmse_ci95_high": 1.246
+    },
+    {
+      "model": "RandomForest",
+      "r2_mean": 0.8725,
+      "r2_std": 0.0054,
+      "r2_ci95_low": 0.8704,
+      "r2_ci95_high": 0.8746,
+      "rmse_mean": 1.112,
+      "rmse_ci95_low": 1.108,
+      "rmse_ci95_high": 1.117
+    }
+  ],
+  "best_hyperparams": {
+    "max_depth": 20,
+    "min_samples_leaf": 1,
+    "n_estimators": 200
+  },
+  "best_hyperparam_score": 0.3930511766170692,
+  "feature_elimination": [
+    {
+      "model": "Tam (10 feat)",
+      "n_features": 10,
+      "r2_mean": 0.8725,
+      "r2_std": 0.0054,
+      "rmse_mean": 1.1123,
+      "r2_ci95_low": NaN,
+      "r2_ci95_high": NaN
+    },
+    {
+      "model": "Minimal (7 feat)",
+      "n_features": 7,
+      "r2_mean": 0.8698,
+      "r2_std": 0.0057,
+      "rmse_mean": 1.1241,
+      "r2_ci95_low": 0.8676,
+      "r2_ci95_high": 0.8719
+    }
+  ],
+  "weak_features_removed": [
+    "impervious_pct",
+    "is_dtc_saturated",
+    "building_density_per_km2"
+  ],
+  "minimal_features": [
+    "ndvi_mean",
+    "albedo_mean",
+    "dw_built_pct",
+    "building_height_mean",
+    "road_density_m_per_km2",
+    "dtc_breeze_m",
+    "wind_blockage_index"
+  ],
+  "n_seeds": 5,
+  "seeds": [
+    42,
+    7,
+    2024,
+    1,
+    99
+  ],
+  "n_folds": 5
+}
