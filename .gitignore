@@ -24,9 +24,10 @@ data/external/*
 # Sonuçlar
 results/*.pkl
 results/*.npz
-figures/*.png
-figures/*.jpg
-figures/*.pdf
+# figures/ — tez/online erişim için commit'e dahil edildi (Hafta 24+ sonrası)
+# figures/*.png
+# figures/*.jpg
+# figures/*.pdf
 !results/.gitkeep
 !figures/.gitkeep
 
